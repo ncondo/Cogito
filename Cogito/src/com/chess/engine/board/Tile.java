@@ -1,5 +1,9 @@
 package com.chess.engine.board;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 import com.chess.engine.pieces.Piece;
 /**
  * @author ncondo
@@ -7,10 +11,26 @@ import com.chess.engine.pieces.Piece;
  */
 public abstract class Tile {
 
-    int tileCoordinate;
+    protected final int tileCoordinate;
+    private static final Map<Integer, EmptyTile> EMPTY_TILES = createAllEmptyTiles();
 
-    Tile(int tileCoordinate) {
+    private Tile(int tileCoordinate) {
         this.tileCoordinate = tileCoordinate;
+    }
+    
+    public static Tile createTile(final int tileCoordinate, final Piece piece) {
+    	return piece != null ? new OccupiedTile(tileCoordinate, piece) : EMPTY_TILES.get(tileCoordinate);
+    }
+    
+    private static Map<Integer, EmptyTile> createAllEmptyTiles() {
+    	
+    	final Map<Integer, EmptyTile> emptyTileMap = new HashMap<>();
+    	
+    	for (int i = 0; i < 64; i++) {
+    		emptyTileMap.put(i, new EmptyTile(i));
+    	}
+    	
+    	return Collections.unmodifiableMap(emptyTileMap);
     }
 
     public abstract boolean isTileOccupied();
@@ -20,7 +40,7 @@ public abstract class Tile {
 
     public static final class EmptyTile extends Tile {
 
-        EmptyTile(int coordinate) {
+        EmptyTile(final int coordinate) {
             super(coordinate);
         }
 
@@ -36,7 +56,7 @@ public abstract class Tile {
     }
 
     public static final class OccupiedTile extends Tile {
-        Piece pieceOnTile;
+        private Piece pieceOnTile;
 
         OccupiedTile(int tileCoordinate, Piece pieceOnTile) {
             super(tileCoordinate);
