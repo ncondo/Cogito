@@ -28,7 +28,7 @@ public class King extends Piece {
 	 * @param piecePosition
 	 * @param pieceColor
 	 */
-	King(int piecePosition, Color pieceColor) {
+	public King(final int piecePosition, final Color pieceColor) {
 		super(piecePosition, pieceColor);
 	}
 
@@ -74,6 +74,11 @@ public class King extends Piece {
 	private static boolean isEighthColumnExclusion(final int currentPosition, final int candidateOffset) {
 		return BoardUtils.EIGHTH_COLUMN[currentPosition] && (candidateOffset == -7 ||
 				candidateOffset == 1 || candidateOffset == 9);
+	}
+	
+	@Override
+	public String toString() {
+		return PieceType.KING.toString();
 	}
 
 }

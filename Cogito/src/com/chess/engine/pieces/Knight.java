@@ -24,7 +24,7 @@ public class Knight extends Piece {
 	
 	private final static int[] POSSIBLE_MOVE_OFFSETS = { -17, -15, -10, -6, 6, 10, 15, 17 };
 
-	Knight(final int piecePosition, final Color pieceColor) {
+	public Knight(final int piecePosition, final Color pieceColor) {
 		super(piecePosition, pieceColor);
 	}
 	
@@ -82,6 +82,11 @@ public class Knight extends Piece {
 	private static boolean isEighthColumnExclusion(final int currentPosition, final int candidateOffset) {
 		return BoardUtils.EIGHTH_COLUMN[currentPosition] && (candidateOffset == -15 ||
 				candidateOffset == -6 || candidateOffset == 10 || candidateOffset == 17);
+	}
+	
+	@Override
+	public String toString() {
+		return PieceType.KNIGHT.toString();
 	}
 
 }

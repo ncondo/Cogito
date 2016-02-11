@@ -28,7 +28,7 @@ public class Rook extends Piece {
 	 * @param piecePosition
 	 * @param pieceColor
 	 */
-	Rook(final int piecePosition, final Color pieceColor) {
+	public Rook(final int piecePosition, final Color pieceColor) {
 		super(piecePosition, pieceColor);
 	}
 
@@ -76,6 +76,11 @@ public class Rook extends Piece {
 	
 	private static boolean isEighthColumnExclusion(final int currentPosition, final int candidateOffset) {
 		return BoardUtils.EIGHTH_COLUMN[currentPosition] && (candidateOffset == 1);
+	}
+	
+	@Override
+	public String toString() {
+		return PieceType.ROOK.toString();
 	}
 
 }

@@ -53,6 +53,11 @@ public abstract class Tile {
         public Piece getPiece() {
             return null;
         }
+        
+        @Override
+        public String toString() {
+        	return "-";
+        }
     }
 
     public static final class OccupiedTile extends Tile {
@@ -72,6 +77,12 @@ public abstract class Tile {
         @Override
         public Piece getPiece() {
             return this.pieceOnTile;
+        }
+        
+        @Override
+        public String toString() {
+        	return getPiece().getPieceColor().isBlack() ? getPiece().toString().toLowerCase() :
+        		getPiece().toString();
         }
     }
 }

@@ -28,7 +28,7 @@ public class Queen extends Piece {
 	 * @param piecePosition
 	 * @param pieceColor
 	 */
-	Queen(final int piecePosition, final Color pieceColor) {
+	public Queen(final int piecePosition, final Color pieceColor) {
 		super(piecePosition, pieceColor);
 	}
 
@@ -78,6 +78,11 @@ public class Queen extends Piece {
 	private static boolean isEighthColumnExclusion(final int currentPosition, final int candidateOffset) {
 		return BoardUtils.EIGHTH_COLUMN[currentPosition] && (candidateOffset == -7 || 
 				candidateOffset == 1 || candidateOffset == 9);
+	}
+	
+	@Override
+	public String toString() {
+		return PieceType.QUEEN.toString();
 	}
 
 }
