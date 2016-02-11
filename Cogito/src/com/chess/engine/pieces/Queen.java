@@ -20,14 +20,18 @@ import com.chess.engine.board.Tile;
  * @author ncondo
  *
  */
-public class Bishop extends Piece {
+public class Queen extends Piece {
 	
-	private final static int[] POSSIBLE_MOVE_OFFSETS = { -9, -7, 7, 9 };
+	private static final int[] POSSIBLE_MOVE_OFFSETS = { -9, -8, -7, -1, 1, 7, 8, 9 };
 
-	Bishop(final int piecePosition, final Color pieceColor) {
+	/**
+	 * @param piecePosition
+	 * @param pieceColor
+	 */
+	Queen(final int piecePosition, final Color pieceColor) {
 		super(piecePosition, pieceColor);
 	}
-	
+
 	@Override
 	public Collection<Move> calculateLegalMoves(final Board board) {
 		
@@ -68,12 +72,12 @@ public class Bishop extends Piece {
 	
 	private static boolean isFirstColumnExclusion(final int currentPosition, final int candidateOffset) {
 		return BoardUtils.FIRST_COLUMN[currentPosition] && (candidateOffset == -9 || 
-				candidateOffset == 7);
+				candidateOffset == -1 || candidateOffset == 7);
 	}
 	
 	private static boolean isEighthColumnExclusion(final int currentPosition, final int candidateOffset) {
 		return BoardUtils.EIGHTH_COLUMN[currentPosition] && (candidateOffset == -7 || 
-				candidateOffset == 9);
+				candidateOffset == 1 || candidateOffset == 9);
 	}
 
 }

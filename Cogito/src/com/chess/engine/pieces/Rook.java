@@ -12,6 +12,8 @@ import com.chess.engine.Color;
 import com.chess.engine.board.Board;
 import com.chess.engine.board.BoardUtils;
 import com.chess.engine.board.Move;
+import com.chess.engine.board.Move.AttackMove;
+import com.chess.engine.board.Move.MajorMove;
 import com.chess.engine.board.Tile;
 
 /**
@@ -26,7 +28,7 @@ public class Rook extends Piece {
 	 * @param piecePosition
 	 * @param pieceColor
 	 */
-	Rook(int piecePosition, Color pieceColor) {
+	Rook(final int piecePosition, final Color pieceColor) {
 		super(piecePosition, pieceColor);
 	}
 
@@ -51,13 +53,13 @@ public class Rook extends Piece {
 					final Tile possibleDestinationTile = board.getTile(possibleDestination);
 					
 					if (!possibleDestinationTile.isTileOccupied()) {
-						legalMoves.add(new Move.MajorMove(board, this, possibleDestination));
+						legalMoves.add(new MajorMove(board, this, possibleDestination));
 					} else {
 						final Piece pieceAtDestination = possibleDestinationTile.getPiece();
 						final Color pieceColor = pieceAtDestination.getPieceColor();
 						
 						if (this.pieceColor != pieceColor) {
-							legalMoves.add(new Move.AttackMove(board, this, possibleDestination, 
+							legalMoves.add(new AttackMove(board, this, possibleDestination, 
 									pieceAtDestination));
 						}
 						break;
