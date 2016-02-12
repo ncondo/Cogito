@@ -10,16 +10,24 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
+import com.chess.engine.board.Board;
 import com.chess.engine.board.BoardUtils;
 
 /**
@@ -30,6 +38,9 @@ public class Table {
 	
 	private final JFrame gameFrame;
 	private final BoardPanel boardPanel;
+	private Board chessBoard;
+	private BoardDirection boardDirection;
+	private String pieceIconPath;
 	
 	private final static Dimension OUTER_FRAME_DIMENSION = new Dimension(600, 600);
 	private final static Dimension BOARD_PANEL_DIMENSION = new Dimension(400, 350);
@@ -45,6 +56,9 @@ public class Table {
 		populateMenuBar(tableMenuBar);
 		this.gameFrame.setJMenuBar(tableMenuBar);
 		this.gameFrame.setSize(OUTER_FRAME_DIMENSION);
+		this.chessBoard = Board.createStandardBoard();
+		this.boardDirection = BoardDirection.NORMAL;
+		this.pieceIconPath = "assets/basic/";
 		this.boardPanel = new BoardPanel();
 		this.gameFrame.add(this.boardPanel, BorderLayout.CENTER);
 		this.gameFrame.setVisible(true);
@@ -93,6 +107,45 @@ public class Table {
 			setPreferredSize(BOARD_PANEL_DIMENSION);
 			validate();
 		}
+		
+		public void drawBoard(final Board board) {
+			removeAll();
+			for (final TilePanel boardTile : boardDirection.traverse(boardTiles)) {
+				boardTile.drawTile(board);
+				add(boardTile);
+			}
+			validate();
+			repaint();
+		}
+	}
+	
+	public enum BoardDirection {
+		NORMAL {
+			@Override
+			List<TilePanel> traverse(final List<TilePanel> boardTiles) {
+				return boardTiles;
+			}
+			
+			@Override
+			BoardDirection opposite() {
+				return FLIPPED;
+			}
+		},
+		FLIPPED {
+			@Override
+			List<TilePanel> traverse(final List<TilePanel> boardTiles) {
+				Collections.reverse(boardTiles);
+				return boardTiles;
+			}
+			
+			@Override
+			BoardDirection opposite() {
+				return NORMAL;
+			}
+		};
+		
+		abstract List<TilePanel> traverse(final List<TilePanel> boardTiles);
+		abstract BoardDirection opposite();
 	}
 	
 	private class TilePanel extends JPanel {
@@ -103,7 +156,32 @@ public class Table {
 			this.tileID = tileID;
 			setPreferredSize(TILE_PANEL_DIMENSION);
 			assignTileColor();
+			assignTilePieceIcon(chessBoard);
 			validate();
+		}
+		
+		public void drawTile(final Board board) {
+			assignTileColor();
+			assignTilePieceIcon(board);
+			validate();
+			repaint();
+		}
+		
+		private void assignTilePieceIcon(final Board board) {
+			this.removeAll();
+			if (board.getTile(this.tileID).isTileOccupied()) {
+				
+				try {
+					// Example: white bishop == "WB.gif"
+					final BufferedImage image = ImageIO.read(new File(pieceIconPath +
+						board.getTile(this.tileID).getPiece().getPieceColor().toString().substring(0, 1) +
+						"" + board.getTile(this.tileID).getPiece().toString() + ".gif"));
+					add(new JLabel(new ImageIcon(image)));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		}
 
 		private void assignTileColor() {
