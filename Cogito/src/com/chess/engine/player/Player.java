@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-
 import com.chess.engine.Color;
 import com.chess.engine.board.Board;
 import com.chess.engine.board.Move;
@@ -22,15 +21,16 @@ public abstract class Player {
 	
 	protected final Board board;
 	protected final King playerKing;
-	protected final Collection<Move> legalMoves;
+	protected Collection<Move> legalMoves;
 	private final boolean isInCheck;
 	
-	Player(final Board board, final Collection<Move> legalMoves,
+	Player(final Board board, Collection<Move> legalMoves,
 			final Collection<Move> opponentMoves) {
 		
 		this.board = board;
 		this.playerKing = establishKing();
 		this.legalMoves = legalMoves;
+		this.legalMoves.addAll(calculateKingCastles(legalMoves, opponentMoves));
 		this.isInCheck = !Player.calculateAttacksOnTile(
 				this.playerKing.getPiecePosition(),
 				opponentMoves).isEmpty();

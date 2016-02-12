@@ -32,6 +32,10 @@ public abstract class Tile {
     	
     	return Collections.unmodifiableMap(emptyTileMap);
     }
+    
+    public int getTileCoordinate() {
+    	return this.tileCoordinate;
+    }
 
     public abstract boolean isTileOccupied();
 
