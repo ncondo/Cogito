@@ -18,6 +18,9 @@ import com.chess.engine.pieces.Pawn;
 import com.chess.engine.pieces.Piece;
 import com.chess.engine.pieces.Queen;
 import com.chess.engine.pieces.Rook;
+import com.chess.engine.player.BlackPlayer;
+import com.chess.engine.player.Player;
+import com.chess.engine.player.WhitePlayer;
 
 /**
  * @author ncondo
@@ -26,16 +29,25 @@ import com.chess.engine.pieces.Rook;
 public class Board {
 	
 	private final List<Tile> gameBoard;
+	
 	private final Collection<Piece> whitePieces;
 	private final Collection<Piece> blackPieces;
 	
-	private Board(Builder builder) {
+	private final WhitePlayer whitePlayer;
+	private final BlackPlayer blackPlayer;
+	private final Player currentPlayer;
+	
+	private Board(final Builder builder) {
 		this.gameBoard = createGameBoard(builder);
 		this.whitePieces = calculateActivePieces(this.gameBoard, Color.WHITE);
 		this.blackPieces = calculateActivePieces(this.gameBoard, Color.BLACK);
 		
 		final Collection<Move> whiteStandardLegalMoves = calculateLegalMoves(this.whitePieces);
 		final Collection<Move> blackStandardLegalMoves = calculateLegalMoves(this.blackPieces);
+		
+		this.whitePlayer = new WhitePlayer(this, whiteStandardLegalMoves, blackStandardLegalMoves);
+		this.blackPlayer = new BlackPlayer(this, whiteStandardLegalMoves, blackStandardLegalMoves);
+		this.currentPlayer = builder.nextMoveMaker.choosePlayer(this.whitePlayer, this.blackPlayer);
 	}
 	
 	@Override
@@ -51,6 +63,14 @@ public class Board {
 			}
 		}
 		return builder.toString();
+	}
+	
+	public Collection<Piece> getBlackPieces() {
+		return this.blackPieces;
+	}
+	
+	public Collection<Piece> getWhitePieces() {
+		return this.whitePieces;
 	}
 	
 	private Collection<Move> calculateLegalMoves(final Collection<Piece> pieces) {
@@ -139,6 +159,7 @@ public class Board {
 		
 		Map<Integer, Piece> boardConfig;
 		Color nextMoveMaker;
+		Pawn enPassantPawn;
 		
 		public Builder() {
 			this.boardConfig = new HashMap<>();
@@ -157,6 +178,30 @@ public class Board {
 		public Board build() {
 			return new Board(this);
 		}
+
+		public void setEnPassantPawn(Pawn enPassantPawn) {
+			this.enPassantPawn = enPassantPawn;
+			
+		}
 	}
+
+	public Player whitePlayer() {
+		return this.whitePlayer;
+	}
+	
+	public Player blackPlayer() {
+		return this.blackPlayer;
+	}
+
+	public Player currentPlayer() {
+		return this.currentPlayer;
+	}
+
+	/*
+	public Iterable<Move> getAllLegalMoves() {
+		return Iterables.unmodifiableIterable(Iterables.concat(this.whitePlayer.getLegalMoves(),
+				this.blackPlayer.getLegalMoves()));
+	}
+	*/
 
 }

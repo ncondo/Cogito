@@ -25,7 +25,7 @@ public class Bishop extends Piece {
 	private final static int[] POSSIBLE_MOVE_OFFSETS = { -9, -7, 7, 9 };
 
 	public Bishop(final int piecePosition, final Color pieceColor) {
-		super(piecePosition, pieceColor);
+		super(PieceType.BISHOP, piecePosition, pieceColor);
 	}
 	
 	@Override
@@ -74,6 +74,11 @@ public class Bishop extends Piece {
 	private static boolean isEighthColumnExclusion(final int currentPosition, final int candidateOffset) {
 		return BoardUtils.EIGHTH_COLUMN[currentPosition] && (candidateOffset == -7 || 
 				candidateOffset == 9);
+	}
+	
+	@Override
+	public Bishop movePiece(Move move) {
+		return new Bishop(move.getDestinationCoordinate(), move.getMovedPiece().getPieceColor());
 	}
 	
 	@Override

@@ -29,7 +29,7 @@ public class King extends Piece {
 	 * @param pieceColor
 	 */
 	public King(final int piecePosition, final Color pieceColor) {
-		super(piecePosition, pieceColor);
+		super(PieceType.KING, piecePosition, pieceColor);
 	}
 
 	@Override
@@ -74,6 +74,11 @@ public class King extends Piece {
 	private static boolean isEighthColumnExclusion(final int currentPosition, final int candidateOffset) {
 		return BoardUtils.EIGHTH_COLUMN[currentPosition] && (candidateOffset == -7 ||
 				candidateOffset == 1 || candidateOffset == 9);
+	}
+	
+	@Override
+	public King movePiece(Move move) {
+		return new King(move.getDestinationCoordinate(), move.getMovedPiece().getPieceColor());
 	}
 	
 	@Override

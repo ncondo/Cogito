@@ -29,7 +29,7 @@ public class Rook extends Piece {
 	 * @param pieceColor
 	 */
 	public Rook(final int piecePosition, final Color pieceColor) {
-		super(piecePosition, pieceColor);
+		super(PieceType.ROOK, piecePosition, pieceColor);
 	}
 
 	@Override
@@ -76,6 +76,11 @@ public class Rook extends Piece {
 	
 	private static boolean isEighthColumnExclusion(final int currentPosition, final int candidateOffset) {
 		return BoardUtils.EIGHTH_COLUMN[currentPosition] && (candidateOffset == 1);
+	}
+	
+	@Override
+	public Rook movePiece(Move move) {
+		return new Rook(move.getDestinationCoordinate(), move.getMovedPiece().getPieceColor());
 	}
 	
 	@Override

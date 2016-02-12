@@ -28,7 +28,7 @@ public class Pawn extends Piece {
 	 * @param pieceColor
 	 */
 	public Pawn(final int piecePosition, final Color pieceColor) {
-		super(piecePosition, pieceColor);
+		super(PieceType.PAWN, piecePosition, pieceColor);
 	}
 
 	@Override
@@ -88,6 +88,11 @@ public class Pawn extends Piece {
 		}
 		
 		return Collections.unmodifiableList(legalMoves);
+	}
+	
+	@Override
+	public Pawn movePiece(Move move) {
+		return new Pawn(move.getDestinationCoordinate(), move.getMovedPiece().getPieceColor());
 	}
 	
 	@Override
