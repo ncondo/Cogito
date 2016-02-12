@@ -132,22 +132,23 @@ public class Board {
 		builder.setPiece(new Pawn(15, Color.BLACK));
 		
 		// White Layout
-		builder.setPiece(new Rook(48, Color.WHITE));
-		builder.setPiece(new Knight(49, Color.WHITE));
-		builder.setPiece(new Bishop(50, Color.WHITE));
-		builder.setPiece(new Queen(51, Color.WHITE));
-		builder.setPiece(new King(52, Color.WHITE));
-		builder.setPiece(new Bishop(53, Color.WHITE));
-		builder.setPiece(new Knight(54, Color.WHITE));
-		builder.setPiece(new Rook(55, Color.WHITE));
-		builder.setPiece(new Pawn(56, Color.WHITE));
-		builder.setPiece(new Pawn(57, Color.WHITE));
-		builder.setPiece(new Pawn(58, Color.WHITE));
-		builder.setPiece(new Pawn(59, Color.WHITE));
-		builder.setPiece(new Pawn(60, Color.WHITE));
-		builder.setPiece(new Pawn(61, Color.WHITE));
-		builder.setPiece(new Pawn(62, Color.WHITE));
-		builder.setPiece(new Pawn(63, Color.WHITE));
+		builder.setPiece(new Pawn(48, Color.WHITE));
+		builder.setPiece(new Pawn(49, Color.WHITE));
+		builder.setPiece(new Pawn(50, Color.WHITE));
+		builder.setPiece(new Pawn(51, Color.WHITE));
+		builder.setPiece(new Pawn(52, Color.WHITE));
+		builder.setPiece(new Pawn(53, Color.WHITE));
+		builder.setPiece(new Pawn(54, Color.WHITE));
+		builder.setPiece(new Pawn(55, Color.WHITE));
+		builder.setPiece(new Rook(56, Color.WHITE));
+		builder.setPiece(new Knight(57, Color.WHITE));
+		builder.setPiece(new Bishop(58, Color.WHITE));
+		builder.setPiece(new Queen(59, Color.WHITE));
+		builder.setPiece(new King(60, Color.WHITE));
+		builder.setPiece(new Bishop(61, Color.WHITE));
+		builder.setPiece(new Knight(62, Color.WHITE));
+		builder.setPiece(new Rook(63, Color.WHITE));
+
 		
 		// White to move first
 		builder.setMoveMaker(Color.WHITE);
