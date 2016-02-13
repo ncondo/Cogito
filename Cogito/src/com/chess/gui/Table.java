@@ -58,7 +58,7 @@ public class Table {
 		this.gameFrame.setSize(OUTER_FRAME_DIMENSION);
 		this.chessBoard = Board.createStandardBoard();
 		this.boardDirection = BoardDirection.NORMAL;
-		this.pieceIconPath = "assets/basic/";
+		this.pieceIconPath = "assets/";
 		this.boardPanel = new BoardPanel();
 		this.gameFrame.add(this.boardPanel, BorderLayout.CENTER);
 		this.gameFrame.setVisible(true);
