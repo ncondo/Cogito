@@ -10,6 +10,8 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -25,15 +27,17 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
 import com.chess.engine.board.Board;
 import com.chess.engine.board.BoardUtils;
+import com.chess.engine.board.Move;
+import com.chess.engine.board.Tile;
+import com.chess.engine.pieces.Piece;
+import com.chess.engine.player.MoveTransition;
 
-/**
- * @author ncondo
- *
- */
+
 public class Table {
 	
 	private final JFrame gameFrame;
@@ -41,6 +45,10 @@ public class Table {
 	private Board chessBoard;
 	private BoardDirection boardDirection;
 	private String pieceIconPath;
+	
+	private Tile sourceTile;
+	private Tile destinationTile;
+	private Piece humanMovedPiece;
 	
 	private final static Dimension OUTER_FRAME_DIMENSION = new Dimension(600, 600);
 	private final static Dimension BOARD_PANEL_DIMENSION = new Dimension(400, 350);
@@ -157,6 +165,66 @@ public class Table {
 			setPreferredSize(TILE_PANEL_DIMENSION);
 			assignTileColor();
 			assignTilePieceIcon(chessBoard);
+			
+			addMouseListener(new MouseListener() {
+				@Override
+				public void mouseClicked(final MouseEvent e) {
+					if (SwingUtilities.isLeftMouseButton(e)) {
+						if (sourceTile == null) {
+							sourceTile = chessBoard.getTile(tileID);
+							humanMovedPiece = sourceTile.getPiece();
+							if (humanMovedPiece == null) {
+								sourceTile = null;
+							}
+						} else {
+							destinationTile = chessBoard.getTile(tileID);
+							final Move move = Move.MoveFactory.createMove(
+									chessBoard, sourceTile.getTileCoordinate(),
+									destinationTile.getTileCoordinate());
+							final MoveTransition transition = chessBoard.currentPlayer().makeMove(move);
+							if (transition.getMoveStatus().isDone()) {
+								chessBoard = transition.getTransitionBoard();
+								// TODO add the move to the move log
+							}
+							sourceTile = null;
+							destinationTile = null;
+							humanMovedPiece = null;
+						}
+					} else if (SwingUtilities.isRightMouseButton(e)) {
+						sourceTile = null;
+						destinationTile = null;
+						humanMovedPiece = null;
+					}
+					
+					SwingUtilities.invokeLater(new Runnable() {
+						@Override
+						public void run() {
+							boardPanel.drawBoard(chessBoard);
+						}
+					});
+				}
+				
+				@Override
+				public void mousePressed(final MouseEvent e) {
+					
+				}
+				
+				@Override
+				public void mouseReleased(final MouseEvent e) {
+					
+				}
+				
+				@Override
+				public void mouseEntered(final MouseEvent e) {
+					
+				}
+				
+				@Override
+				public void mouseExited(final MouseEvent e) {
+					
+				}
+			});
+			
 			validate();
 		}
 		

@@ -8,10 +8,7 @@ import com.chess.engine.pieces.Pawn;
 import com.chess.engine.pieces.Piece;
 import com.chess.engine.pieces.Rook;
 
-/**
- * @author ncondo
- *
- */
+
 public abstract class Move {
 	
 	final Board board;

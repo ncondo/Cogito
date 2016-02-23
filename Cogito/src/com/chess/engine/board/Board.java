@@ -22,10 +22,7 @@ import com.chess.engine.player.BlackPlayer;
 import com.chess.engine.player.Player;
 import com.chess.engine.player.WhitePlayer;
 
-/**
- * @author ncondo
- *
- */
+
 public class Board {
 	
 	private final List<Tile> gameBoard;
