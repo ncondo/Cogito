@@ -16,6 +16,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -38,12 +39,11 @@ import com.chess.engine.pieces.Piece;
 import com.chess.engine.player.MoveTransition;
 
 
-public class Table {
+public class GameBoard {
 	
 	private final JFrame gameFrame;
 	private final BoardPanel boardPanel;
 	private Board chessBoard;
-	private BoardDirection boardDirection;
 	private String pieceIconPath;
 	
 	private Tile sourceTile;
@@ -57,7 +57,7 @@ public class Table {
 	private final Color lightTileColor = Color.decode("#FFFACD");
 	private final Color darkTileColor = Color.decode("#593E1A");
 	
-	public Table() {
+	public GameBoard() {
 		this.gameFrame = new JFrame("Cogito");
 		this.gameFrame.setLayout(new BorderLayout());
 		final JMenuBar tableMenuBar = new JMenuBar();
@@ -65,7 +65,6 @@ public class Table {
 		this.gameFrame.setJMenuBar(tableMenuBar);
 		this.gameFrame.setSize(OUTER_FRAME_DIMENSION);
 		this.chessBoard = Board.createStandardBoard();
-		this.boardDirection = BoardDirection.NORMAL;
 		this.pieceIconPath = "assets/";
 		this.boardPanel = new BoardPanel();
 		this.gameFrame.add(this.boardPanel, BorderLayout.CENTER);
@@ -79,14 +78,6 @@ public class Table {
 	
 	private JMenu createFileMenu() {
 		final JMenu fileMenu = new JMenu("File");
-		final JMenuItem openPGN = new JMenuItem("Load PGN File");
-		openPGN.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				System.out.println("open up pgn file");
-			}
-		});
-		fileMenu.add(openPGN);
 		
 		final JMenuItem exitMenuItem = new JMenuItem("Exit");
 		exitMenuItem.addActionListener(new ActionListener() {
@@ -101,6 +92,10 @@ public class Table {
 	}
 	
 	private class BoardPanel extends JPanel {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 		final List<TilePanel> boardTiles;
 		
 		BoardPanel() {
@@ -118,7 +113,7 @@ public class Table {
 		
 		public void drawBoard(final Board board) {
 			removeAll();
-			for (final TilePanel boardTile : boardDirection.traverse(boardTiles)) {
+			for (final TilePanel boardTile : boardTiles) {
 				boardTile.drawTile(board);
 				add(boardTile);
 			}
@@ -126,37 +121,13 @@ public class Table {
 			repaint();
 		}
 	}
-	
-	public enum BoardDirection {
-		NORMAL {
-			@Override
-			List<TilePanel> traverse(final List<TilePanel> boardTiles) {
-				return boardTiles;
-			}
-			
-			@Override
-			BoardDirection opposite() {
-				return FLIPPED;
-			}
-		},
-		FLIPPED {
-			@Override
-			List<TilePanel> traverse(final List<TilePanel> boardTiles) {
-				Collections.reverse(boardTiles);
-				return boardTiles;
-			}
-			
-			@Override
-			BoardDirection opposite() {
-				return NORMAL;
-			}
-		};
-		
-		abstract List<TilePanel> traverse(final List<TilePanel> boardTiles);
-		abstract BoardDirection opposite();
-	}
+
 	
 	private class TilePanel extends JPanel {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 		private final int tileID;
 		
 		TilePanel(final BoardPanel boardPanel, final int tileID) {
@@ -231,6 +202,8 @@ public class Table {
 		public void drawTile(final Board board) {
 			assignTileColor();
 			assignTilePieceIcon(board);
+			highlightLegalMoves(board);
+			
 			validate();
 			repaint();
 		}
@@ -265,6 +238,27 @@ public class Table {
 				setBackground(this.tileID % 2 != 0 ? lightTileColor : darkTileColor);
 			}
 			
+		}
+		
+		private void highlightLegalMoves(final Board board) {
+			for (final Move move : pieceLegalMoves(board)) {
+				if (move.getDestinationCoordinate() == this.tileID) {
+					try {
+						add(new JLabel(new ImageIcon(ImageIO.read(
+								new File("assets/green_highlight.png")))));
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+		
+		private Collection<Move> pieceLegalMoves(final Board board) {
+			if (humanMovedPiece != null && 
+					humanMovedPiece.getPieceColor() == board.currentPlayer().getColor()) {
+				return humanMovedPiece.calculateLegalMoves(board);
+			}
+			return Collections.emptyList();
 		}
 		
 	}

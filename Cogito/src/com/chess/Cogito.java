@@ -1,7 +1,7 @@
 package com.chess;
 
 import com.chess.engine.board.Board;
-import com.chess.gui.Table;
+import com.chess.gui.GameBoard;
 
 
 public class Cogito {
@@ -12,7 +12,8 @@ public class Cogito {
 		
 		System.out.println(board);
 		
-		Table table = new Table();
+		@SuppressWarnings("unused")
+		GameBoard table = new GameBoard();
 
 	}
 
