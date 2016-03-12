@@ -12,8 +12,9 @@ import com.chess.engine.Color;
 import com.chess.engine.board.Board;
 import com.chess.engine.board.BoardUtils;
 import com.chess.engine.board.Move;
-import com.chess.engine.board.Move.AttackMove;
-import com.chess.engine.board.Move.MajorMove;
+import com.chess.engine.board.Move.PawnJump;
+import com.chess.engine.board.Move.PawnAttackMove;
+import com.chess.engine.board.Move.PawnMove;
 
 
 public class Pawn extends Piece {
@@ -48,7 +49,7 @@ public class Pawn extends Piece {
 			}
 			
 			if (currentOffset == 8 && !board.getTile(possibleDestination).isTileOccupied()) {
-				legalMoves.add(new Move.MajorMove(board, this, possibleDestination));
+				legalMoves.add(new PawnMove(board, this, possibleDestination));
 			} else if (currentOffset == 16 && this.isFirstMove() && 
 					((BoardUtils.SEVENTH_RANK[this.piecePosition] && this.pieceColor.isBlack()) ||
 					(BoardUtils.SECOND_RANK[this.piecePosition] && this.pieceColor.isWhite()))) {
@@ -58,7 +59,7 @@ public class Pawn extends Piece {
 				
 				if (!board.getTile(behindPossibleDestination).isTileOccupied() &&
 						!board.getTile(possibleDestination).isTileOccupied()) {
-					legalMoves.add(new MajorMove(board, this, possibleDestination));
+					legalMoves.add(new PawnJump(board, this, possibleDestination));
 				}
 				
 			} else if (currentOffset == 7 && 
@@ -69,7 +70,7 @@ public class Pawn extends Piece {
 					final Piece pieceAtDestination = board.getTile(possibleDestination).getPiece();
 					
 					if (this.pieceColor != pieceAtDestination.getPieceColor()) {
-						legalMoves.add(new AttackMove(board, this, possibleDestination,
+						legalMoves.add(new PawnAttackMove(board, this, possibleDestination,
 								pieceAtDestination));
 					}
 				}
@@ -82,7 +83,7 @@ public class Pawn extends Piece {
 					final Piece pieceAtDestination = board.getTile(possibleDestination).getPiece();
 					
 					if (this.pieceColor != pieceAtDestination.getPieceColor()) {
-						legalMoves.add(new AttackMove(board, this, possibleDestination,
+						legalMoves.add(new PawnAttackMove(board, this, possibleDestination,
 								pieceAtDestination));
 					}
 				}

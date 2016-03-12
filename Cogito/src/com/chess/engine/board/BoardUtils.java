@@ -3,11 +3,8 @@
  */
 package com.chess.engine.board;
 
-/**
- * @author ncondo
- *
- */
-public class BoardUtils {
+
+public final class BoardUtils {
 	
 	public static final boolean[] FIRST_COLUMN = initColumn(0);
 	public static final boolean[] SECOND_COLUMN = initColumn(1);
