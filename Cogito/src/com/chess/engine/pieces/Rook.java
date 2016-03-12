@@ -16,10 +16,7 @@ import com.chess.engine.board.Move.AttackMove;
 import com.chess.engine.board.Move.MajorMove;
 import com.chess.engine.board.Tile;
 
-/**
- * @author ncondo
- *
- */
+
 public class Rook extends Piece {
 	
 	private static final int[] POSSIBLE_MOVE_OFFSETS = { -8, -1, 1, 8 };
@@ -29,7 +26,12 @@ public class Rook extends Piece {
 	 * @param pieceColor
 	 */
 	public Rook(final int piecePosition, final Color pieceColor) {
-		super(PieceType.ROOK, piecePosition, pieceColor);
+		super(PieceType.ROOK, piecePosition, pieceColor, true);
+	}
+	
+	public Rook(final int piecePosition, final Color pieceColor,
+			final boolean isFirstMove) {
+		super(PieceType.ROOK, piecePosition, pieceColor, isFirstMove);
 	}
 
 	@Override

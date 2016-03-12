@@ -16,10 +16,7 @@ import com.chess.engine.board.Move.AttackMove;
 import com.chess.engine.board.Move.MajorMove;
 import com.chess.engine.board.Tile;
 
-/**
- * @author ncondo
- *
- */
+
 public class Queen extends Piece {
 	
 	private static final int[] POSSIBLE_MOVE_OFFSETS = { -9, -8, -7, -1, 1, 7, 8, 9 };
@@ -29,7 +26,12 @@ public class Queen extends Piece {
 	 * @param pieceColor
 	 */
 	public Queen(final int piecePosition, final Color pieceColor) {
-		super(PieceType.QUEEN, piecePosition, pieceColor);
+		super(PieceType.QUEEN, piecePosition, pieceColor, true);
+	}
+	
+	public Queen(final int piecePosition, final Color pieceColor,
+			final boolean isFirstMove) {
+		super(PieceType.QUEEN, piecePosition, pieceColor, isFirstMove);
 	}
 
 	@Override

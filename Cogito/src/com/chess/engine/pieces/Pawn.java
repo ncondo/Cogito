@@ -15,10 +15,7 @@ import com.chess.engine.board.Move;
 import com.chess.engine.board.Move.AttackMove;
 import com.chess.engine.board.Move.MajorMove;
 
-/**
- * @author ncondo
- *
- */
+
 public class Pawn extends Piece {
 	
 	private final static int[] POSSIBLE_MOVE_OFFSETS = { 7, 8, 9, 16 };
@@ -28,7 +25,12 @@ public class Pawn extends Piece {
 	 * @param pieceColor
 	 */
 	public Pawn(final int piecePosition, final Color pieceColor) {
-		super(PieceType.PAWN, piecePosition, pieceColor);
+		super(PieceType.PAWN, piecePosition, pieceColor, true);
+	}
+	
+	public Pawn(final int piecePosition, final Color pieceColor,
+			final boolean isFirstMove) {
+		super(PieceType.PAWN, piecePosition, pieceColor, isFirstMove);
 	}
 
 	@Override
@@ -48,8 +50,8 @@ public class Pawn extends Piece {
 			if (currentOffset == 8 && !board.getTile(possibleDestination).isTileOccupied()) {
 				legalMoves.add(new Move.MajorMove(board, this, possibleDestination));
 			} else if (currentOffset == 16 && this.isFirstMove() && 
-					(BoardUtils.SEVENTH_RANK[this.piecePosition] && this.pieceColor.isBlack()) ||
-					(BoardUtils.SECOND_RANK[this.piecePosition] && this.pieceColor.isWhite())) {
+					((BoardUtils.SEVENTH_RANK[this.piecePosition] && this.pieceColor.isBlack()) ||
+					(BoardUtils.SECOND_RANK[this.piecePosition] && this.pieceColor.isWhite()))) {
 				
 				final int behindPossibleDestination = this.piecePosition + 
 						(this.pieceColor.getDirection() * 8);

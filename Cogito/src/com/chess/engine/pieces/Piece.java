@@ -9,10 +9,7 @@ import com.chess.engine.Color;
 import com.chess.engine.board.Board;
 import com.chess.engine.board.Move;
 
-/**
- * @author ncondo
- *
- */
+
 public abstract class Piece {
 	
 	protected final PieceType pieceType;
@@ -22,11 +19,11 @@ public abstract class Piece {
 	private final int cachedHashCode;
 	
 	Piece(final PieceType pieceType, final int piecePosition,
-			final Color pieceColor) {
+			final Color pieceColor, final boolean isFirstMove) {
 		this.pieceType = pieceType;
 		this.piecePosition = piecePosition;
 		this.pieceColor = pieceColor;
-		this.isFirstMove = false;
+		this.isFirstMove = isFirstMove;
 		this.cachedHashCode = computeHashCode();
 	}
 	

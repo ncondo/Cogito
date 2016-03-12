@@ -16,16 +16,18 @@ import com.chess.engine.board.Move.AttackMove;
 import com.chess.engine.board.Move.MajorMove;
 import com.chess.engine.board.Tile;
 
-/**
- * @author ncondo
- *
- */
+
 public class Knight extends Piece {
 	
 	private final static int[] POSSIBLE_MOVE_OFFSETS = { -17, -15, -10, -6, 6, 10, 15, 17 };
 
 	public Knight(final int piecePosition, final Color pieceColor) {
-		super(PieceType.KNIGHT, piecePosition, pieceColor);
+		super(PieceType.KNIGHT, piecePosition, pieceColor, true);
+	}
+	
+	public Knight(final int piecePosition, final Color pieceColor,
+			final boolean isFirstMove) {
+		super(PieceType.KNIGHT, piecePosition, pieceColor, isFirstMove);
 	}
 	
 	@Override
