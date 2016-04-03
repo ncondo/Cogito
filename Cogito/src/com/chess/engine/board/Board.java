@@ -26,7 +26,6 @@ import com.chess.engine.player.WhitePlayer;
 public class Board {
 	
 	private final List<Tile> gameBoard;
-	
 	private final Collection<Piece> whitePieces;
 	private final Collection<Piece> blackPieces;
 	
@@ -34,7 +33,7 @@ public class Board {
 	private final BlackPlayer blackPlayer;
 	private final Player currentPlayer;
 	
-	private Board(final Builder builder) {
+	private Board(final BoardBuilder builder) {
 		this.gameBoard = createGameBoard(builder);
 		this.whitePieces = calculateActivePieces(this.gameBoard, Color.WHITE);
 		this.blackPieces = calculateActivePieces(this.gameBoard, Color.BLACK);
@@ -99,7 +98,7 @@ public class Board {
 		return gameBoard.get(tileCoordinate);
 	}
 	
-	private static List<Tile> createGameBoard(final Builder builder) {
+	private static List<Tile> createGameBoard(final BoardBuilder builder) {
 		final List<Tile> tiles = new ArrayList<Tile>(BoardUtils.NUM_TILES);
 		for (int i = 0; i < BoardUtils.NUM_TILES; i++) {
 			tiles.add(i, Tile.createTile(i, builder.boardConfig.get(i)));
@@ -108,7 +107,7 @@ public class Board {
 	}
 	
 	public static Board createStandardBoard() {
-		final Builder builder = new Builder();
+		final BoardBuilder builder = new BoardBuilder();
 		
 		// Black Layout
 		builder.setPiece(new Rook(0, Color.BLACK));
@@ -153,22 +152,22 @@ public class Board {
 		return builder.build();
 	}
 	
-	public static class Builder {
+	public static class BoardBuilder {
 		
 		Map<Integer, Piece> boardConfig;
 		Color nextMoveMaker;
 		Pawn enPassantPawn;
 		
-		public Builder() {
+		public BoardBuilder() {
 			this.boardConfig = new HashMap<>();
 		}
 		
-		public Builder setPiece(final Piece piece) {
+		public BoardBuilder setPiece(final Piece piece) {
 			this.boardConfig.put(piece.getPiecePosition(), piece);
 			return this;
 		}
 		
-		public Builder setMoveMaker(final Color nextMoveMaker) {
+		public BoardBuilder setMoveMaker(final Color nextMoveMaker) {
 			this.nextMoveMaker = nextMoveMaker;
 			return this;
 		}
@@ -194,12 +193,5 @@ public class Board {
 	public Player currentPlayer() {
 		return this.currentPlayer;
 	}
-
-	/*
-	public Iterable<Move> getAllLegalMoves() {
-		return Iterables.unmodifiableIterable(Iterables.concat(this.whitePlayer.getLegalMoves(),
-				this.blackPlayer.getLegalMoves()));
-	}
-	*/
 
 }

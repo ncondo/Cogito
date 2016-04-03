@@ -13,10 +13,7 @@ import com.chess.engine.board.Move;
 import com.chess.engine.pieces.King;
 import com.chess.engine.pieces.Piece;
 
-/**
- * @author ncondo
- *
- */
+
 public abstract class Player {
 	
 	protected final Board board;

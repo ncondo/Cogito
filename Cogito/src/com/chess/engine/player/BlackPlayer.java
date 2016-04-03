@@ -17,10 +17,7 @@ import com.chess.engine.board.Tile;
 import com.chess.engine.pieces.Piece;
 import com.chess.engine.pieces.Rook;
 
-/**
- * @author ncondo
- *
- */
+
 public class BlackPlayer extends Player {
 
 	public BlackPlayer(final Board board, final Collection<Move> whiteStandardLegalMoves,

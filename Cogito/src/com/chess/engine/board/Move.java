@@ -3,7 +3,7 @@
  */
 package com.chess.engine.board;
 
-import com.chess.engine.board.Board.Builder;
+import com.chess.engine.board.Board.BoardBuilder;
 import com.chess.engine.pieces.Pawn;
 import com.chess.engine.pieces.Piece;
 import com.chess.engine.pieces.Rook;
@@ -77,7 +77,7 @@ public abstract class Move {
 	}
 	
 	public Board execute() {
-		final Builder builder = new Builder();
+		final BoardBuilder builder = new BoardBuilder();
 		
 		for (final Piece piece : this.board.currentPlayer().getActivePieces()) {
 			if (!this.movedPiece.equals(piece)) {
@@ -182,7 +182,7 @@ public abstract class Move {
 		
 		@Override
 		public Board execute() {
-			final Builder builder = new Builder();
+			final BoardBuilder builder = new BoardBuilder();
 			for (final Piece piece : this.board.currentPlayer().getActivePieces()) {
 				if (!this.movedPiece.equals(piece)) {
 					builder.setPiece(piece);
@@ -227,7 +227,7 @@ public abstract class Move {
 		
 		@Override
 		public Board execute() {
-			final Builder builder = new Builder();
+			final BoardBuilder builder = new BoardBuilder();
 			for (final Piece piece : this.board.currentPlayer().getActivePieces()) {
 				if (!this.movedPiece.equals(piece) && !this.castleRook.equals(piece)) {
 					builder.setPiece(piece);
