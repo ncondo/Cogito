@@ -6,10 +6,7 @@ package com.chess.engine.player;
 import com.chess.engine.board.Board;
 import com.chess.engine.board.Move;
 
-/**
- * @author ncondo
- *
- */
+
 public class MoveTransition {
 	
 	private final Board transitionBoard;

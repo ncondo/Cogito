@@ -7,10 +7,7 @@ import com.chess.engine.player.BlackPlayer;
 import com.chess.engine.player.Player;
 import com.chess.engine.player.WhitePlayer;
 
-/**
- * @author ncondo
- *
- */
+
 public enum Color {
 	
 	WHITE {

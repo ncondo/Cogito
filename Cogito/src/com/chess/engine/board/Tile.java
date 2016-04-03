@@ -5,10 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.chess.engine.pieces.Piece;
-/**
- * @author ncondo
- *
- */
+
+
 public abstract class Tile {
 
     protected final int tileCoordinate;
@@ -16,10 +14,6 @@ public abstract class Tile {
 
     private Tile(final int tileCoordinate) {
         this.tileCoordinate = tileCoordinate;
-    }
-    
-    public static Tile createTile(final int tileCoordinate, final Piece piece) {
-    	return piece != null ? new OccupiedTile(tileCoordinate, piece) : EMPTY_TILES_CACHE.get(tileCoordinate);
     }
     
     private static Map<Integer, EmptyTile> createAllEmptyTiles() {
@@ -31,6 +25,10 @@ public abstract class Tile {
     	}
     	
     	return Collections.unmodifiableMap(emptyTileMap);
+    }
+    
+    public static Tile createTile(final int tileCoordinate, final Piece piece) {
+    	return piece != null ? new OccupiedTile(tileCoordinate, piece) : EMPTY_TILES_CACHE.get(tileCoordinate);
     }
     
     public int getTileCoordinate() {
@@ -68,7 +66,7 @@ public abstract class Tile {
     	
         private final Piece pieceOnTile;
 
-        private OccupiedTile(int tileCoordinate, final Piece pieceOnTile) {
+        private OccupiedTile(final int tileCoordinate, final Piece pieceOnTile) {
             super(tileCoordinate);
             this.pieceOnTile = pieceOnTile;
         }

@@ -51,8 +51,8 @@ public class Pawn extends Piece {
 			if (currentOffset == 8 && !board.getTile(possibleDestination).isTileOccupied()) {
 				legalMoves.add(new PawnMove(board, this, possibleDestination));
 			} else if (currentOffset == 16 && this.isFirstMove() && 
-					((BoardUtils.SEVENTH_RANK[this.piecePosition] && this.pieceColor.isBlack()) ||
-					(BoardUtils.SECOND_RANK[this.piecePosition] && this.pieceColor.isWhite()))) {
+					((BoardUtils.SEVENTH_ROW[this.piecePosition] && this.pieceColor.isBlack()) ||
+					(BoardUtils.SECOND_ROW[this.piecePosition] && this.pieceColor.isWhite()))) {
 				
 				final int behindPossibleDestination = this.piecePosition + 
 						(this.pieceColor.getDirection() * 8);
