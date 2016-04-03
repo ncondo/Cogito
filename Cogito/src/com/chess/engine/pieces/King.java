@@ -21,10 +21,6 @@ public class King extends Piece {
 	
 	private final static int[] POSSIBLE_MOVE_OFFSETS = { -9, -8, -7, -1, 1, 7, 8, 9 };
 
-	/**
-	 * @param piecePosition
-	 * @param pieceColor
-	 */
 	public King(final int piecePosition, final Color pieceColor) {
 		super(PieceType.KING, piecePosition, pieceColor, true);
 	}
@@ -37,8 +33,8 @@ public class King extends Piece {
 	@Override
 	public Collection<Move> calculateLegalMoves(Board board) {
 		
-		int possibleDestination;
 		final List<Move> legalMoves = new ArrayList<>();
+		int possibleDestination;
 		
 		for (final int currentOffset : POSSIBLE_MOVE_OFFSETS) {
 			possibleDestination = this.piecePosition + currentOffset;
@@ -64,7 +60,6 @@ public class King extends Piece {
 				}
 			}
 		}
-		
 		return Collections.unmodifiableList(legalMoves);
 	}
 	

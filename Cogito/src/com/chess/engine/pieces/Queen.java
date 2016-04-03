@@ -21,10 +21,6 @@ public class Queen extends Piece {
 	
 	private static final int[] POSSIBLE_MOVE_OFFSETS = { -9, -8, -7, -1, 1, 7, 8, 9 };
 
-	/**
-	 * @param piecePosition
-	 * @param pieceColor
-	 */
 	public Queen(final int piecePosition, final Color pieceColor) {
 		super(PieceType.QUEEN, piecePosition, pieceColor, true);
 	}
@@ -37,20 +33,19 @@ public class Queen extends Piece {
 	@Override
 	public Collection<Move> calculateLegalMoves(final Board board) {
 		
-		int possibleDestination;
 		final List<Move> legalMoves = new ArrayList<>();
+		int possibleDestination;
 		
 		for (final int currentOffset : POSSIBLE_MOVE_OFFSETS) {
 			possibleDestination = this.piecePosition;
 			
 			while (BoardUtils.isValidTileCoordinate(possibleDestination)) {
-				
 				if (isFirstColumnExclusion(possibleDestination, currentOffset) ||
 						isEighthColumnExclusion(possibleDestination, currentOffset)) {
 					break;
 				}
-				possibleDestination += currentOffset;
 				
+				possibleDestination += currentOffset;
 				if (BoardUtils.isValidTileCoordinate(possibleDestination)) {
 					final Tile possibleDestinationTile = board.getTile(possibleDestination);
 					

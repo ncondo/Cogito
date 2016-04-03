@@ -34,9 +34,10 @@ public class Knight extends Piece {
 	public Collection<Move> calculateLegalMoves(final Board board) {
 		
 		final List<Move> legalMoves = new ArrayList<>();
+		int possibleDestination;
 		
 		for (final int currentOffset : POSSIBLE_MOVE_OFFSETS) {
-			final int possibleDestination = this.piecePosition + currentOffset;
+			possibleDestination = this.piecePosition + currentOffset;
 			
 			if (BoardUtils.isValidTileCoordinate(possibleDestination)) {
 				if (isFirstColumnExclusion(this.piecePosition, currentOffset) ||

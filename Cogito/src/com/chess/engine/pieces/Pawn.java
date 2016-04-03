@@ -21,10 +21,6 @@ public class Pawn extends Piece {
 	
 	private final static int[] POSSIBLE_MOVE_OFFSETS = { 7, 8, 9, 16 };
 
-	/**
-	 * @param piecePosition
-	 * @param pieceColor
-	 */
 	public Pawn(final int piecePosition, final Color pieceColor) {
 		super(PieceType.PAWN, piecePosition, pieceColor, true);
 	}
@@ -37,8 +33,8 @@ public class Pawn extends Piece {
 	@Override
 	public Collection<Move> calculateLegalMoves(final Board board) {
 		
-		int possibleDestination;
 		final List<Move> legalMoves = new ArrayList<>();
+		int possibleDestination;
 		
 		for (final int currentOffset : POSSIBLE_MOVE_OFFSETS) {
 			possibleDestination = this.piecePosition + 
@@ -51,8 +47,8 @@ public class Pawn extends Piece {
 			if (currentOffset == 8 && !board.getTile(possibleDestination).isTileOccupied()) {
 				legalMoves.add(new PawnMove(board, this, possibleDestination));
 			} else if (currentOffset == 16 && this.isFirstMove() && 
-					((BoardUtils.SEVENTH_ROW[this.piecePosition] && this.pieceColor.isBlack()) ||
-					(BoardUtils.SECOND_ROW[this.piecePosition] && this.pieceColor.isWhite()))) {
+					((BoardUtils.SECOND_ROW[this.piecePosition] && this.pieceColor.isWhite()) ||
+					(BoardUtils.SEVENTH_ROW[this.piecePosition] && this.pieceColor.isBlack()))) {
 				
 				final int behindPossibleDestination = this.piecePosition + 
 						(this.pieceColor.getDirection() * 8);
@@ -89,7 +85,6 @@ public class Pawn extends Piece {
 				}
 			}
 		}
-		
 		return Collections.unmodifiableList(legalMoves);
 	}
 	
