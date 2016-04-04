@@ -17,10 +17,7 @@ import com.chess.engine.board.Tile;
 import com.chess.engine.pieces.Piece;
 import com.chess.engine.pieces.Rook;
 
-/**
- * @author ncondo
- *
- */
+
 public class WhitePlayer extends Player {
 
 	public WhitePlayer(final Board board, final Collection<Move> whiteStandardLegalMoves,
@@ -45,8 +42,8 @@ public class WhitePlayer extends Player {
 	}
 
 	@Override
-	protected Collection<Move> calculateKingCastles(
-			Collection<Move> playerLegals, Collection<Move> opponentLegals) {
+	protected Collection<Move> calculateKingCastles(final Collection<Move> playerLegals,
+			final Collection<Move> opponentLegals) {
 		
 		final List<Move> kingCastles = new ArrayList<>();
 		
@@ -74,7 +71,6 @@ public class WhitePlayer extends Player {
 				
 				final Tile rookTile = this.board.getTile(56);
 				if (rookTile.isTileOccupied() && rookTile.getPiece().isFirstMove()) {
-					// Check for attacks on 57?
 					if (Player.calculateAttacksOnTile(58, opponentLegals).isEmpty() &&
 							Player.calculateAttacksOnTile(59, opponentLegals).isEmpty() &&
 							rookTile.getPiece().getPieceType().isRook()) {

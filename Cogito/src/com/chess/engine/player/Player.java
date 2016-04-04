@@ -26,12 +26,11 @@ public abstract class Player {
 		
 		this.board = board;
 		this.playerKing = establishKing();
+		// add the castling moves to the list of legal moves
 		List<Move> tempList = new ArrayList<Move>();
 		tempList.addAll(legalMoves);
 		tempList.addAll(calculateKingCastles(legalMoves, opponentMoves));
-		this.legalMoves = tempList;
-		//this.legalMoves = legalMoves;
-		//this.legalMoves.addAll(calculateKingCastles(legalMoves, opponentMoves));
+		this.legalMoves = Collections.unmodifiableList(tempList);
 		this.isInCheck = !Player.calculateAttacksOnTile(
 				this.playerKing.getPiecePosition(),
 				opponentMoves).isEmpty();

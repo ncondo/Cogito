@@ -3,10 +3,7 @@
  */
 package com.chess.engine.player;
 
-/**
- * @author ncondo
- *
- */
+
 public enum MoveStatus {
 	
 	DONE {

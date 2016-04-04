@@ -64,6 +64,7 @@ public abstract class Piece {
 	public int hashCode() {
 		return this.cachedHashCode;
 	}
+	
 	private int computeHashCode() {
 		int result = pieceType.hashCode();
 		result = 31 * result + pieceColor.hashCode();
