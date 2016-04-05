@@ -25,8 +25,7 @@ public class Bishop extends Piece {
 		super(PieceType.BISHOP, piecePosition, pieceColor, true);
 	}
 	
-	public Bishop(final int piecePosition, final Color pieceColor,
-			final boolean isFirstMove) {
+	public Bishop(final int piecePosition, final Color pieceColor, final boolean isFirstMove) {
 		super(PieceType.BISHOP, piecePosition, pieceColor, isFirstMove);
 	}
 	

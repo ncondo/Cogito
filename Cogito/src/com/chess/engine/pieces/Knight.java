@@ -25,8 +25,7 @@ public class Knight extends Piece {
 		super(PieceType.KNIGHT, piecePosition, pieceColor, true);
 	}
 	
-	public Knight(final int piecePosition, final Color pieceColor,
-			final boolean isFirstMove) {
+	public Knight(final int piecePosition, final Color pieceColor, final boolean isFirstMove) {
 		super(PieceType.KNIGHT, piecePosition, pieceColor, isFirstMove);
 	}
 	

@@ -25,8 +25,7 @@ public class King extends Piece {
 		super(PieceType.KING, piecePosition, pieceColor, true);
 	}
 	
-	public King(final int piecePosition, final Color pieceColor,
-			final boolean isFirstMove) {
+	public King(final int piecePosition, final Color pieceColor, final boolean isFirstMove) {
 		super(PieceType.KING, piecePosition, pieceColor, isFirstMove);
 	}
 

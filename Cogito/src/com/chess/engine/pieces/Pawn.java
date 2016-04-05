@@ -25,8 +25,7 @@ public class Pawn extends Piece {
 		super(PieceType.PAWN, piecePosition, pieceColor, true);
 	}
 	
-	public Pawn(final int piecePosition, final Color pieceColor,
-			final boolean isFirstMove) {
+	public Pawn(final int piecePosition, final Color pieceColor, final boolean isFirstMove) {
 		super(PieceType.PAWN, piecePosition, pieceColor, isFirstMove);
 	}
 

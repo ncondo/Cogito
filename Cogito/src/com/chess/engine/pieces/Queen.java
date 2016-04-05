@@ -25,8 +25,7 @@ public class Queen extends Piece {
 		super(PieceType.QUEEN, piecePosition, pieceColor, true);
 	}
 	
-	public Queen(final int piecePosition, final Color pieceColor,
-			final boolean isFirstMove) {
+	public Queen(final int piecePosition, final Color pieceColor, final boolean isFirstMove) {
 		super(PieceType.QUEEN, piecePosition, pieceColor, isFirstMove);
 	}
 

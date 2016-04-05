@@ -25,8 +25,7 @@ public class Rook extends Piece {
 		super(PieceType.ROOK, piecePosition, pieceColor, true);
 	}
 	
-	public Rook(final int piecePosition, final Color pieceColor,
-			final boolean isFirstMove) {
+	public Rook(final int piecePosition, final Color pieceColor, final boolean isFirstMove) {
 		super(PieceType.ROOK, piecePosition, pieceColor, isFirstMove);
 	}
 

@@ -3,6 +3,8 @@
  */
 package com.chess.engine.board;
 
+import java.util.Map;
+
 
 public final class BoardUtils {
 	
@@ -22,6 +24,9 @@ public final class BoardUtils {
 	
 	public static final int NUM_TILES = 64;
 	public static final int NUM_TILES_PER_ROW = 8;
+	
+	//public static final String[] ALGEBREIC_NOTATION = initializeAlgebreicNotation();
+	//public static final Map<String, Integer> POSITION_TO_COORDINATE = initializePositionToCoordinateMap();
 	
 	private BoardUtils() {
 		throw new RuntimeException("Cannot instantiate BoardUtils");
@@ -50,5 +55,14 @@ public final class BoardUtils {
 	public static boolean isValidTileCoordinate(final int coordinate) {
 		return coordinate >=0 && coordinate < NUM_TILES;
 	}
+	/*
+	public static int getCoordinateAtPosition(final String position) {
+		POSITION_TO_COORDINATE.get(position);
+	}
+	
+	public static String getPositionAtCoordinate(final int coordinate) {
+		return ALGEBREIC_NOTATION[coordinate];
+	}
+	*/
 
 }
