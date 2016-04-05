@@ -60,9 +60,8 @@ public class GameBoard {
 	public GameBoard() {
 		this.gameFrame = new JFrame("Cogito");
 		this.gameFrame.setLayout(new BorderLayout());
-		final JMenuBar tableMenuBar = new JMenuBar();
-		populateMenuBar(tableMenuBar);
-		this.gameFrame.setJMenuBar(tableMenuBar);
+		final JMenuBar gameMenuBar = populateMenuBar();
+		this.gameFrame.setJMenuBar(gameMenuBar);
 		this.gameFrame.setSize(OUTER_FRAME_DIMENSION);
 		this.chessBoard = Board.createStandardBoard();
 		this.pieceIconPath = "assets/";
@@ -72,8 +71,10 @@ public class GameBoard {
 		this.gameFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 	}
 	
-	private void populateMenuBar(final JMenuBar tableMenuBar) {
-		tableMenuBar.add(createFileMenu());
+	private JMenuBar populateMenuBar() {
+		final JMenuBar gameMenuBar = new JMenuBar();
+		gameMenuBar.add(createFileMenu());
+		return gameMenuBar;
 	}
 	
 	private JMenu createFileMenu() {
@@ -87,14 +88,10 @@ public class GameBoard {
 			}
 		});
 		fileMenu.add(exitMenuItem);
-		
 		return fileMenu;
 	}
 	
 	private class BoardPanel extends JPanel {
-		/**
-		 * 
-		 */
 		private static final long serialVersionUID = 1L;
 		final List<TilePanel> boardTiles;
 		
@@ -106,7 +103,6 @@ public class GameBoard {
 				this.boardTiles.add(tilePanel);
 				add(tilePanel);
 			}
-			
 			setPreferredSize(BOARD_PANEL_DIMENSION);
 			validate();
 		}
@@ -121,12 +117,8 @@ public class GameBoard {
 			repaint();
 		}
 	}
-
 	
 	private class TilePanel extends JPanel {
-		/**
-		 * 
-		 */
 		private static final long serialVersionUID = 1L;
 		private final int tileID;
 		
@@ -161,6 +153,7 @@ public class GameBoard {
 							destinationTile = null;
 							humanMovedPiece = null;
 						}
+					  // use right click to cancel any selections before a move is made
 					} else if (SwingUtilities.isRightMouseButton(e)) {
 						sourceTile = null;
 						destinationTile = null;
@@ -176,26 +169,14 @@ public class GameBoard {
 				}
 				
 				@Override
-				public void mousePressed(final MouseEvent e) {
-					
-				}
-				
+				public void mousePressed(final MouseEvent e) { }
 				@Override
-				public void mouseReleased(final MouseEvent e) {
-					
-				}
-				
+				public void mouseReleased(final MouseEvent e) { }
 				@Override
-				public void mouseEntered(final MouseEvent e) {
-					
-				}
-				
+				public void mouseEntered(final MouseEvent e) { }
 				@Override
-				public void mouseExited(final MouseEvent e) {
-					
-				}
+				public void mouseExited(final MouseEvent e) { }
 			});
-			
 			validate();
 		}
 		
@@ -203,7 +184,6 @@ public class GameBoard {
 			assignTileColor();
 			assignTilePieceIcon(board);
 			highlightLegalMoves(board);
-			
 			validate();
 			repaint();
 		}
@@ -211,7 +191,6 @@ public class GameBoard {
 		private void assignTilePieceIcon(final Board board) {
 			this.removeAll();
 			if (board.getTile(this.tileID).isTileOccupied()) {
-				
 				try {
 					// Example: white bishop == "WB.gif"
 					final BufferedImage image = ImageIO.read(new File(pieceIconPath +
@@ -219,7 +198,6 @@ public class GameBoard {
 						"" + board.getTile(this.tileID).getPiece().toString() + ".gif"));
 					add(new JLabel(new ImageIcon(image)));
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -260,7 +238,5 @@ public class GameBoard {
 			}
 			return Collections.emptyList();
 		}
-		
 	}
-
 }
