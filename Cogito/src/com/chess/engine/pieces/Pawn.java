@@ -18,7 +18,6 @@ import com.chess.engine.board.Move.PawnMove;
 
 
 public class Pawn extends Piece {
-	
 	private final static int[] POSSIBLE_MOVE_OFFSETS = { 7, 8, 9, 16 };
 
 	public Pawn(final int piecePosition, final Color pieceColor) {
@@ -31,7 +30,6 @@ public class Pawn extends Piece {
 
 	@Override
 	public Collection<Move> calculateLegalMoves(final Board board) {
-		
 		final List<Move> legalMoves = new ArrayList<>();
 		int possibleDestination;
 		
@@ -42,25 +40,20 @@ public class Pawn extends Piece {
 			if (!BoardUtils.isValidTileCoordinate(possibleDestination)) {
 				continue;
 			}
-			
 			if (currentOffset == 8 && !board.getTile(possibleDestination).isTileOccupied()) {
 				legalMoves.add(new PawnMove(board, this, possibleDestination));
 			} else if (currentOffset == 16 && this.isFirstMove() && 
 					((BoardUtils.SECOND_ROW[this.piecePosition] && this.pieceColor.isWhite()) ||
 					(BoardUtils.SEVENTH_ROW[this.piecePosition] && this.pieceColor.isBlack()))) {
-				
 				final int behindPossibleDestination = this.piecePosition + 
 						(this.pieceColor.getDirection() * 8);
-				
 				if (!board.getTile(behindPossibleDestination).isTileOccupied() &&
 						!board.getTile(possibleDestination).isTileOccupied()) {
 					legalMoves.add(new PawnJump(board, this, possibleDestination));
 				}
-				
 			} else if (currentOffset == 7 && 
 					!((BoardUtils.FIRST_COLUMN[this.piecePosition] && this.pieceColor.isBlack()) ||
 					 (BoardUtils.EIGHTH_COLUMN[this.piecePosition] && this.pieceColor.isWhite()))) {
-				
 				if (board.getTile(possibleDestination).isTileOccupied()) {
 					final Piece pieceAtDestination = board.getTile(possibleDestination).getPiece();
 					
@@ -69,11 +62,9 @@ public class Pawn extends Piece {
 								pieceAtDestination));
 					}
 				}
-				
 			} else if (currentOffset == 9 &&
 					!((BoardUtils.FIRST_COLUMN[this.piecePosition] && this.pieceColor.isWhite()) ||
 					 (BoardUtils.EIGHTH_COLUMN[this.piecePosition] && this.pieceColor.isBlack()))) {
-				
 				if (board.getTile(possibleDestination).isTileOccupied()) {
 					final Piece pieceAtDestination = board.getTile(possibleDestination).getPiece();
 					

@@ -12,13 +12,12 @@ import com.chess.engine.Color;
 import com.chess.engine.board.Board;
 import com.chess.engine.board.BoardUtils;
 import com.chess.engine.board.Move;
-import com.chess.engine.board.Move.AttackMove;
 import com.chess.engine.board.Move.MajorMove;
+import com.chess.engine.board.Move.MajorAttackMove;
 import com.chess.engine.board.Tile;
 
 
 public class Knight extends Piece {
-	
 	private final static int[] POSSIBLE_MOVE_OFFSETS = { -17, -15, -10, -6, 6, 10, 15, 17 };
 
 	public Knight(final int piecePosition, final Color pieceColor) {
@@ -31,7 +30,6 @@ public class Knight extends Piece {
 	
 	@Override
 	public Collection<Move> calculateLegalMoves(final Board board) {
-		
 		final List<Move> legalMoves = new ArrayList<>();
 		int possibleDestination;
 		
@@ -45,7 +43,6 @@ public class Knight extends Piece {
 						isEighthColumnExclusion(this.piecePosition, currentOffset)) {
 					continue;
 				}
-				
 				final Tile possibleDestinationTile = board.getTile(possibleDestination);
 				
 				if (!possibleDestinationTile.isTileOccupied()) {
@@ -55,7 +52,7 @@ public class Knight extends Piece {
 					final Color pieceColor = pieceAtDestination.getPieceColor();
 					
 					if (this.pieceColor != pieceColor) {
-						legalMoves.add(new AttackMove(board, this, possibleDestination,
+						legalMoves.add(new MajorAttackMove(board, this, possibleDestination,
 								pieceAtDestination));
 					}
 				}

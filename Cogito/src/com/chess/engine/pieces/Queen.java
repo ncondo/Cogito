@@ -12,13 +12,12 @@ import com.chess.engine.Color;
 import com.chess.engine.board.Board;
 import com.chess.engine.board.BoardUtils;
 import com.chess.engine.board.Move;
-import com.chess.engine.board.Move.AttackMove;
 import com.chess.engine.board.Move.MajorMove;
+import com.chess.engine.board.Move.MajorAttackMove;
 import com.chess.engine.board.Tile;
 
 
 public class Queen extends Piece {
-	
 	private static final int[] POSSIBLE_MOVE_OFFSETS = { -9, -8, -7, -1, 1, 7, 8, 9 };
 
 	public Queen(final int piecePosition, final Color pieceColor) {
@@ -31,19 +30,16 @@ public class Queen extends Piece {
 
 	@Override
 	public Collection<Move> calculateLegalMoves(final Board board) {
-		
 		final List<Move> legalMoves = new ArrayList<>();
 		int possibleDestination;
 		
 		for (final int currentOffset : POSSIBLE_MOVE_OFFSETS) {
 			possibleDestination = this.piecePosition;
-			
 			while (BoardUtils.isValidTileCoordinate(possibleDestination)) {
 				if (isFirstColumnExclusion(possibleDestination, currentOffset) ||
 						isEighthColumnExclusion(possibleDestination, currentOffset)) {
 					break;
 				}
-				
 				possibleDestination += currentOffset;
 				if (BoardUtils.isValidTileCoordinate(possibleDestination)) {
 					final Tile possibleDestinationTile = board.getTile(possibleDestination);
@@ -55,7 +51,7 @@ public class Queen extends Piece {
 						final Color pieceColor = pieceAtDestination.getPieceColor();
 						
 						if (this.pieceColor != pieceColor) {
-							legalMoves.add(new AttackMove(board, this, possibleDestination, 
+							legalMoves.add(new MajorAttackMove(board, this, possibleDestination, 
 									pieceAtDestination));
 						}
 						break;
