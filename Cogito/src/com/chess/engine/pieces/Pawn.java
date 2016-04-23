@@ -14,6 +14,7 @@ import com.chess.engine.board.BoardUtils;
 import com.chess.engine.board.Move;
 import com.chess.engine.board.Move.PawnJump;
 import com.chess.engine.board.Move.PawnAttackMove;
+import com.chess.engine.board.Move.PawnEnPassantAttackMove;
 import com.chess.engine.board.Move.PawnMove;
 
 
@@ -56,10 +57,18 @@ public class Pawn extends Piece {
 					 (BoardUtils.EIGHTH_COLUMN[this.piecePosition] && this.pieceColor.isWhite()))) {
 				if (board.getTile(possibleDestination).isTileOccupied()) {
 					final Piece pieceAtDestination = board.getTile(possibleDestination).getPiece();
-					
 					if (this.pieceColor != pieceAtDestination.getPieceColor()) {
 						legalMoves.add(new PawnAttackMove(board, this, possibleDestination,
 								pieceAtDestination));
+					}
+				} else if (board.getEnPassantPawn() != null) {
+					if (board.getEnPassantPawn().getPiecePosition() == (this.piecePosition +
+							(this.pieceColor.getOppositeDirection()))) {
+						final Piece pieceAtDestination = board.getEnPassantPawn();
+						if (this.pieceColor != pieceAtDestination.getPieceColor()) {
+							legalMoves.add(new PawnEnPassantAttackMove(board, this, possibleDestination,
+									pieceAtDestination));
+						}
 					}
 				}
 			} else if (currentOffset == 9 &&
@@ -67,10 +76,18 @@ public class Pawn extends Piece {
 					 (BoardUtils.EIGHTH_COLUMN[this.piecePosition] && this.pieceColor.isBlack()))) {
 				if (board.getTile(possibleDestination).isTileOccupied()) {
 					final Piece pieceAtDestination = board.getTile(possibleDestination).getPiece();
-					
 					if (this.pieceColor != pieceAtDestination.getPieceColor()) {
 						legalMoves.add(new PawnAttackMove(board, this, possibleDestination,
 								pieceAtDestination));
+					}
+				} else if (board.getEnPassantPawn() != null) {
+					if (board.getEnPassantPawn().getPiecePosition() == (this.piecePosition -
+							(this.pieceColor.getOppositeDirection()))) {
+						final Piece pieceAtDestination = board.getEnPassantPawn();
+						if (this.pieceColor != pieceAtDestination.getPieceColor()) {
+							legalMoves.add(new PawnEnPassantAttackMove(board, this, possibleDestination,
+									pieceAtDestination));
+						}
 					}
 				}
 			}
