@@ -40,10 +40,13 @@ import com.chess.engine.player.MoveTransition;
 
 
 public class GameBoard {
-	
 	private final JFrame gameFrame;
+	private final GameHistoryPanel gameHistoryPanel;
+	private final TakenPiecesPanel takenPiecesPanel;
 	private final BoardPanel boardPanel;
 	private Board chessBoard;
+	private final MoveLog moveLog;
+	
 	private String pieceIconPath;
 	
 	private Tile sourceTile;
@@ -64,9 +67,14 @@ public class GameBoard {
 		this.gameFrame.setJMenuBar(gameMenuBar);
 		this.gameFrame.setSize(OUTER_FRAME_DIMENSION);
 		this.chessBoard = Board.createStandardBoard();
+		this.gameHistoryPanel = new GameHistoryPanel();
+		this.takenPiecesPanel = new TakenPiecesPanel();
 		this.pieceIconPath = "assets/";
 		this.boardPanel = new BoardPanel();
+		this.moveLog = new MoveLog();
+		this.gameFrame.add(this.takenPiecesPanel, BorderLayout.WEST);
 		this.gameFrame.add(this.boardPanel, BorderLayout.CENTER);
+		this.gameFrame.add(this.gameHistoryPanel, BorderLayout.EAST);
 		this.gameFrame.setVisible(true);
 		this.gameFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 	}
@@ -179,7 +187,7 @@ public class GameBoard {
 							final MoveTransition transition = chessBoard.currentPlayer().makeMove(move);
 							if (transition.getMoveStatus().isDone()) {
 								chessBoard = transition.getTransitionBoard();
-								// TODO add the move to the move log
+								moveLog.addMove(move);
 							}
 							sourceTile = null;
 							destinationTile = null;
@@ -195,6 +203,8 @@ public class GameBoard {
 					SwingUtilities.invokeLater(new Runnable() {
 						@Override
 						public void run() {
+							gameHistoryPanel.redo(chessBoard, moveLog);
+							takenPiecesPanel.redo(moveLog);
 							boardPanel.drawBoard(chessBoard);
 						}
 					});
