@@ -79,5 +79,10 @@ public class King extends Piece {
 	public String toString() {
 		return PieceType.KING.toString();
 	}
+	
+	@Override
+	public int getPieceValue() {
+		return this.pieceType.getPieceValue();
+	}
 
 }

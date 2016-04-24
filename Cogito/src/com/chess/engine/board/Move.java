@@ -7,6 +7,7 @@ import com.chess.engine.board.Board.BoardBuilder;
 import com.chess.engine.pieces.Pawn;
 import com.chess.engine.pieces.Piece;
 import com.chess.engine.pieces.Rook;
+import com.chess.engine.pieces.Piece.PieceType;
 
 
 public abstract class Move {
@@ -77,6 +78,10 @@ public abstract class Move {
 	
 	public Piece getAttackedPiece() {
 		return null;
+	}
+	
+	public Board getBoard() {
+		return this.board;
 	}
 	
 	public Board execute() {
@@ -241,7 +246,7 @@ public abstract class Move {
 		
 	}
 	
-	public static final class PawnJump extends Move {
+	public static class PawnJump extends Move {
 		
 		public PawnJump(final Board board, final Piece movedPiece,
 				final int destinationCoordinate) {
@@ -275,6 +280,63 @@ public abstract class Move {
 		public String toString() {
 			return BoardUtils.getPositionAtCoordinate(this.destinationCoordinate);
 		}
+	}
+	
+	public static class PawnPromotion extends Move {
+		final Move decoratedMove;
+		final Pawn promotedPawn;
+		
+		public PawnPromotion(final Move decoratedMove) {
+			super(decoratedMove.getBoard(), decoratedMove.getMovedPiece(), 
+					decoratedMove.getDestinationCoordinate());
+			this.decoratedMove = decoratedMove;
+			this.promotedPawn = (Pawn) decoratedMove.getMovedPiece();
+		}
+		
+		@Override
+		public int hashCode() {
+			return decoratedMove.hashCode() + (31 * promotedPawn.hashCode());
+		}
+		
+		@Override
+		public boolean equals(final Object other) {
+			return this == other || other instanceof PawnPromotion && (super.equals(other));
+		}
+		
+		@Override
+		public String toString() {
+			return BoardUtils.getPositionAtCoordinate(this.movedPiece.getPiecePosition()) +
+					"-" + BoardUtils.getPositionAtCoordinate(this.destinationCoordinate) + 
+					"=" + PieceType.QUEEN;
+		}
+		
+		@Override
+		public Board execute() {
+			final Board pawnMovedBoard = this.decoratedMove.execute();
+			final Board.BoardBuilder builder = new BoardBuilder();
+			for (final Piece piece : pawnMovedBoard.currentPlayer().getActivePieces()) {
+				if (!this.promotedPawn.equals(piece)) {
+					builder.setPiece(piece);
+				}
+			}
+			for (final Piece piece : pawnMovedBoard.currentPlayer().getOpponent().getActivePieces()) {
+				builder.setPiece(piece);
+			}
+			builder.setPiece(this.promotedPawn.getPromotionPiece().movePiece(this));
+			builder.setMoveMaker(pawnMovedBoard.currentPlayer().getColor());
+			return builder.build();
+		}
+		
+		@Override
+		public boolean isAttack() {
+			return this.decoratedMove.isAttack();
+		}
+		
+		@Override
+		public Piece getAttackedPiece() {
+			return this.decoratedMove.getAttackedPiece();
+		}
+		
 	}
 	
 	static abstract class CastleMove extends Move {

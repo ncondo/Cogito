@@ -79,5 +79,10 @@ public class Rook extends Piece {
 	public String toString() {
 		return PieceType.ROOK.toString();
 	}
+	
+	@Override
+	public int getPieceValue() {
+		return this.pieceType.getPieceValue();
+	}
 
 }
