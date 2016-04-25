@@ -46,17 +46,13 @@ public class GameBoard {
 	private final BoardPanel boardPanel;
 	private Board chessBoard;
 	private final MoveLog moveLog;
-	
 	private String pieceIconPath;
-	
 	private Tile sourceTile;
 	private Tile destinationTile;
 	private Piece humanMovedPiece;
-	
 	private final static Dimension OUTER_FRAME_DIMENSION = new Dimension(600, 600);
 	private final static Dimension BOARD_PANEL_DIMENSION = new Dimension(400, 350);
 	private final static Dimension TILE_PANEL_DIMENSION = new Dimension(10, 10);
-	
 	private final Color lightTileColor = Color.decode("#FFFACD");
 	private final Color darkTileColor = Color.decode("#593E1A");
 	
@@ -87,7 +83,6 @@ public class GameBoard {
 	
 	private JMenu createFileMenu() {
 		final JMenu fileMenu = new JMenu("File");
-		
 		final JMenuItem exitMenuItem = new JMenuItem("Exit");
 		exitMenuItem.addActionListener(new ActionListener() {
 			@Override
@@ -168,7 +163,6 @@ public class GameBoard {
 			setPreferredSize(TILE_PANEL_DIMENSION);
 			assignTileColor();
 			assignTilePieceIcon(chessBoard);
-			
 			addMouseListener(new MouseListener() {
 				@Override
 				public void mouseClicked(final MouseEvent e) {
@@ -193,13 +187,11 @@ public class GameBoard {
 							destinationTile = null;
 							humanMovedPiece = null;
 						}
-					  // use right click to cancel any selections before a move is made
 					} else if (SwingUtilities.isRightMouseButton(e)) {
 						sourceTile = null;
 						destinationTile = null;
 						humanMovedPiece = null;
 					}
-					
 					SwingUtilities.invokeLater(new Runnable() {
 						@Override
 						public void run() {
@@ -257,7 +249,6 @@ public class GameBoard {
 					BoardUtils.FIRST_ROW[this.tileID]) {
 				setBackground(this.tileID % 2 != 0 ? lightTileColor : darkTileColor);
 			}
-			
 		}
 		
 		private void highlightLegalMoves(final Board board) {
@@ -281,5 +272,4 @@ public class GameBoard {
 			return Collections.emptyList();
 		}
 	}
-	
 }
