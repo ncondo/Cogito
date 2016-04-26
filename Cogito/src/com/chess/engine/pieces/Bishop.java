@@ -29,6 +29,31 @@ public class Bishop extends Piece {
 	}
 	
 	@Override
+	public boolean equals(final Object other) {
+		return this == other || other instanceof Bishop && (super.equals(other));
+	}
+	
+	@Override
+	public String toString() {
+		return PieceType.BISHOP.toString();
+	}
+	
+	@Override
+	public Bishop movePiece(Move move) {
+		return new Bishop(move.getDestinationCoordinate(), move.getMovedPiece().getPieceColor());
+	}
+	
+	@Override
+	public int getPieceValue() {
+		return this.pieceType.getPieceValue();
+	}
+	
+	@Override
+	public int locationBonus() {
+		return this.pieceColor.bishopBonus(this.piecePosition);
+	}
+	
+	@Override
 	public Collection<Move> calculateLegalMoves(final Board board) {
 		final List<Move> legalMoves = new ArrayList<>();
 		int possibleDestination;
@@ -71,21 +96,6 @@ public class Bishop extends Piece {
 	private static boolean isEighthColumnExclusion(final int currentPosition, final int candidateOffset) {
 		return BoardUtils.EIGHTH_COLUMN[currentPosition] && (candidateOffset == -7 || 
 				candidateOffset == 9);
-	}
-	
-	@Override
-	public Bishop movePiece(Move move) {
-		return new Bishop(move.getDestinationCoordinate(), move.getMovedPiece().getPieceColor());
-	}
-	
-	@Override
-	public String toString() {
-		return PieceType.BISHOP.toString();
-	}
-	
-	@Override
-	public int getPieceValue() {
-		return this.pieceType.getPieceValue();
 	}
 
 }

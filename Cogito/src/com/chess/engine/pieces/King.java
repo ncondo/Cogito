@@ -19,13 +19,79 @@ import com.chess.engine.board.Move.MajorAttackMove;
 
 public class King extends Piece {
 	private final static int[] POSSIBLE_MOVE_OFFSETS = { -9, -8, -7, -1, 1, 7, 8, 9 };
+	private final boolean isCastled;
+	private final boolean kingSideCastleCapable;
+	private final boolean queenSideCastleCapable;
 
-	public King(final int piecePosition, final Color pieceColor) {
+	public King(final int piecePosition, final Color pieceColor, 
+			final boolean kingSideCastleCapable, final boolean queenSideCastleCapable) {
 		super(PieceType.KING, piecePosition, pieceColor, true);
+		this.isCastled = false;
+		this.kingSideCastleCapable = kingSideCastleCapable;
+		this.queenSideCastleCapable = queenSideCastleCapable;
 	}
 	
-	public King(final int piecePosition, final Color pieceColor, final boolean isFirstMove) {
+	public King(final int piecePosition, final Color pieceColor, final boolean isFirstMove,
+			final boolean isCastled, final boolean kingSideCastleCapable, final boolean queenSideCastleCapable) {
 		super(PieceType.KING, piecePosition, pieceColor, isFirstMove);
+		this.isCastled = isCastled;
+		this.kingSideCastleCapable = kingSideCastleCapable;
+		this.queenSideCastleCapable = queenSideCastleCapable;
+	}
+	
+	public boolean isCastled() {
+		return this.isCastled;
+	}
+	
+	public boolean isKingSideCastleCapable() {
+		return this.kingSideCastleCapable;
+	}
+	
+	public boolean isQueenSideCastleCapable() {
+		return this.queenSideCastleCapable;
+	}
+	
+	@Override
+	public boolean equals(final Object other) {
+		if (this == other) {
+			return true;
+		}
+		if (!(other instanceof King)) {
+			return false;
+		}
+		if (!super.equals(other)) {
+			return false;
+		}
+		final King king = (King) other;
+		return isCastled == king.isCastled;
+	}
+	
+	@Override
+	public int hashCode() {
+		int result = super.hashCode();
+		result = 31 * result + (isCastled ? 1: 0);
+		return result;
+	}
+	
+	@Override
+	public String toString() {
+		return this.pieceType.toString();
+	}
+	
+	@Override
+	public King movePiece(Move move) {
+		return new King(move.getDestinationCoordinate(), move.getMovedPiece().getPieceColor(),
+				false, move.isCastlingMove(), false, false);
+	}
+	
+	@Override
+	public int getPieceValue() {
+		return this.pieceType.getPieceValue();
+	}
+	
+	@Override
+	public int locationBonus() {
+		return this.pieceColor.kingBonus(this.piecePosition);
 	}
 
 	@Override
@@ -68,21 +134,6 @@ public class King extends Piece {
 	private static boolean isEighthColumnExclusion(final int currentPosition, final int candidateOffset) {
 		return BoardUtils.EIGHTH_COLUMN[currentPosition] && (candidateOffset == -7 ||
 				candidateOffset == 1 || candidateOffset == 9);
-	}
-	
-	@Override
-	public King movePiece(Move move) {
-		return new King(move.getDestinationCoordinate(), move.getMovedPiece().getPieceColor());
-	}
-	
-	@Override
-	public String toString() {
-		return PieceType.KING.toString();
-	}
-	
-	@Override
-	public int getPieceValue() {
-		return this.pieceType.getPieceValue();
 	}
 
 }

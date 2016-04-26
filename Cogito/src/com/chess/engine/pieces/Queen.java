@@ -27,6 +27,31 @@ public class Queen extends Piece {
 	public Queen(final int piecePosition, final Color pieceColor, final boolean isFirstMove) {
 		super(PieceType.QUEEN, piecePosition, pieceColor, isFirstMove);
 	}
+	
+	@Override
+	public boolean equals(final Object other) {
+		return this == other || other instanceof Queen && (super.equals(other));
+	}
+	
+	@Override
+	public String toString() {
+		return this.pieceType.toString();
+	}
+	
+	@Override
+	public Queen movePiece(Move move) {
+		return new Queen(move.getDestinationCoordinate(), move.getMovedPiece().getPieceColor());
+	}
+	
+	@Override
+	public int getPieceValue() {
+		return this.pieceType.getPieceValue();
+	}
+	
+	@Override
+	public int locationBonus() {
+		return this.pieceColor.queenBonus(this.piecePosition);
+	}
 
 	@Override
 	public Collection<Move> calculateLegalMoves(final Board board) {
@@ -70,21 +95,6 @@ public class Queen extends Piece {
 	private static boolean isEighthColumnExclusion(final int currentPosition, final int candidateOffset) {
 		return BoardUtils.EIGHTH_COLUMN[currentPosition] && (candidateOffset == -7 || 
 				candidateOffset == 1 || candidateOffset == 9);
-	}
-	
-	@Override
-	public Queen movePiece(Move move) {
-		return new Queen(move.getDestinationCoordinate(), move.getMovedPiece().getPieceColor());
-	}
-	
-	@Override
-	public String toString() {
-		return PieceType.QUEEN.toString();
-	}
-	
-	@Override
-	public int getPieceValue() {
-		return this.pieceType.getPieceValue();
 	}
 
 }

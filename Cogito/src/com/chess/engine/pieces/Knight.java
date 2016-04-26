@@ -29,6 +29,31 @@ public class Knight extends Piece {
 	}
 	
 	@Override
+	public boolean equals(final Object other) {
+		return this == other || other instanceof Knight && (super.equals(other));
+	}
+	
+	@Override
+	public String toString() {
+		return this.pieceType.toString();
+	}
+	
+	@Override
+	public Knight movePiece(Move move) {
+		return new Knight(move.getDestinationCoordinate(), move.getMovedPiece().getPieceColor());
+	}
+	
+	@Override
+	public int getPieceValue() {
+		return this.pieceType.getPieceValue();
+	}
+	
+	@Override
+	public int locationBonus() {
+		return this.pieceColor.kingBonus(this.piecePosition);
+	}
+	
+	@Override
 	public Collection<Move> calculateLegalMoves(final Board board) {
 		final List<Move> legalMoves = new ArrayList<>();
 		int possibleDestination;
@@ -79,21 +104,6 @@ public class Knight extends Piece {
 	private static boolean isEighthColumnExclusion(final int currentPosition, final int candidateOffset) {
 		return BoardUtils.EIGHTH_COLUMN[currentPosition] && (candidateOffset == -15 ||
 				candidateOffset == -6 || candidateOffset == 10 || candidateOffset == 17);
-	}
-	
-	@Override
-	public Knight movePiece(Move move) {
-		return new Knight(move.getDestinationCoordinate(), move.getMovedPiece().getPieceColor());
-	}
-	
-	@Override
-	public String toString() {
-		return PieceType.KNIGHT.toString();
-	}
-	
-	@Override
-	public int getPieceValue() {
-		return this.pieceType.getPieceValue();
 	}
 
 }

@@ -27,6 +27,31 @@ public class Rook extends Piece {
 	public Rook(final int piecePosition, final Color pieceColor, final boolean isFirstMove) {
 		super(PieceType.ROOK, piecePosition, pieceColor, isFirstMove);
 	}
+	
+	@Override
+	public boolean equals(final Object other) {
+		return this == other || other instanceof Rook && (super.equals(other));
+	}
+	
+	@Override
+	public String toString() {
+		return this.pieceType.toString();
+	}
+	
+	@Override
+	public Rook movePiece(Move move) {
+		return new Rook(move.getDestinationCoordinate(), move.getMovedPiece().getPieceColor());
+	}
+	
+	@Override
+	public int getPieceValue() {
+		return this.pieceType.getPieceValue();
+	}
+	
+	@Override
+	public int locationBonus() {
+		return this.pieceColor.rookBonus(this.piecePosition);
+	}
 
 	@Override
 	public Collection<Move> calculateLegalMoves(final Board board) {
@@ -68,21 +93,6 @@ public class Rook extends Piece {
 	
 	private static boolean isEighthColumnExclusion(final int currentPosition, final int candidateOffset) {
 		return BoardUtils.EIGHTH_COLUMN[currentPosition] && (candidateOffset == 1);
-	}
-	
-	@Override
-	public Rook movePiece(Move move) {
-		return new Rook(move.getDestinationCoordinate(), move.getMovedPiece().getPieceColor());
-	}
-	
-	@Override
-	public String toString() {
-		return PieceType.ROOK.toString();
-	}
-	
-	@Override
-	public int getPieceValue() {
-		return this.pieceType.getPieceValue();
 	}
 
 }

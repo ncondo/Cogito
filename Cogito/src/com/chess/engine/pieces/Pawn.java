@@ -29,6 +29,35 @@ public class Pawn extends Piece {
 	public Pawn(final int piecePosition, final Color pieceColor, final boolean isFirstMove) {
 		super(PieceType.PAWN, piecePosition, pieceColor, isFirstMove);
 	}
+	
+	public Piece getPromotionPiece() {
+		return new Queen(this.piecePosition, this.pieceColor, false);
+	}
+	
+	@Override
+	public boolean equals(final Object other) {
+		return this == other || other instanceof Pawn && (super.equals(other));
+	}
+	
+	@Override
+	public String toString() {
+		return this.pieceType.toString();
+	}
+	
+	@Override
+	public Pawn movePiece(Move move) {
+		return new Pawn(move.getDestinationCoordinate(), move.getMovedPiece().getPieceColor());
+	}
+	
+	@Override
+	public int getPieceValue() {
+		return this.pieceType.getPieceValue();
+	}
+	
+	@Override
+	public int locationBonus() {
+		return this.pieceColor.pawnBonus(this.piecePosition);
+	}
 
 	@Override
 	public Collection<Move> calculateLegalMoves(final Board board) {
@@ -117,25 +146,6 @@ public class Pawn extends Piece {
 			}
 		}
 		return Collections.unmodifiableList(legalMoves);
-	}
-	
-	@Override
-	public Pawn movePiece(Move move) {
-		return new Pawn(move.getDestinationCoordinate(), move.getMovedPiece().getPieceColor());
-	}
-	
-	@Override
-	public String toString() {
-		return PieceType.PAWN.toString();
-	}
-	
-	@Override
-	public int getPieceValue() {
-		return this.pieceType.getPieceValue();
-	}
-	
-	public Piece getPromotionPiece() {
-		return new Queen(this.piecePosition, this.pieceColor, false);
 	}
 
 }
