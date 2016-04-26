@@ -88,5 +88,14 @@ public final class BoardUtils {
 		return ALGEBRAIC_NOTATION[coordinate];
 	}
 	
+	public static boolean isThreatenedBoard(final Board board) {
+		return board.whitePlayer().isInCheck() || board.blackPlayer().getOpponent().isInCheck();
+	}
+	
+	public static boolean isEndGame(final Board board) {
+		return board.whitePlayer().isInCheckMate() || board.blackPlayer().isInCheckMate() ||
+			   board.whitePlayer().isInStaleMate() || board.blackPlayer().isInStaleMate();
+	}
+	
 
 }
