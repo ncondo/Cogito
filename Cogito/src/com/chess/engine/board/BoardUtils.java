@@ -12,6 +12,10 @@ public final class BoardUtils {
 	
 	public static final boolean[] FIRST_COLUMN = initColumn(0);
 	public static final boolean[] SECOND_COLUMN = initColumn(1);
+	public static final boolean[] THIRD_COLUMN = initColumn(2);
+	public static final boolean[] FOURTH_COLUMN = initColumn(3);
+	public static final boolean[] FIFTH_COLUMN = initColumn(4);
+	public static final boolean[] SIXTH_COLUMN = initColumn(5);
 	public static final boolean[] SEVENTH_COLUMN = initColumn(6);
 	public static final boolean[] EIGHTH_COLUMN = initColumn(7);
 	
@@ -97,5 +101,4 @@ public final class BoardUtils {
 			   board.whitePlayer().isInStaleMate() || board.blackPlayer().isInStaleMate();
 	}
 	
-
 }
