@@ -52,16 +52,14 @@ public abstract class Piece {
 		if (this == other) {
 			return true;
 		}
-		
 		if (!(other instanceof Piece)) {
 			return false;
 		}
-		
 		final Piece otherPiece = (Piece) other;
-		return piecePosition == otherPiece.getPiecePosition() &&
-				pieceType == otherPiece.getPieceType() &&
-				pieceColor == otherPiece.getPieceColor() &&
-				isFirstMove == otherPiece.isFirstMove();
+		return piecePosition == otherPiece.piecePosition &&
+				pieceType == otherPiece.pieceType &&
+				pieceColor == otherPiece.pieceColor &&
+				isFirstMove == otherPiece.isFirstMove;
 	}
 	
 	@Override
@@ -85,6 +83,11 @@ public abstract class Piece {
 		
 		PAWN("P", 100) {
 			@Override
+			public boolean isPawn() {
+				return true;
+			}
+			
+			@Override
 			public boolean isKing() {
 				return false;
 			}
@@ -94,7 +97,12 @@ public abstract class Piece {
 				return false;
 			}
 		},
-		KNIGHT("N", 300) {
+		KNIGHT("N", 320) {
+			@Override
+			public boolean isPawn() {
+				return false;
+			}
+			
 			@Override
 			public boolean isKing() {
 				return false;
@@ -105,7 +113,12 @@ public abstract class Piece {
 				return false;
 			}
 		},
-		BISHOP("B", 300) {
+		BISHOP("B", 330) {
+			@Override
+			public boolean isPawn() {
+				return false;
+			}
+			
 			@Override
 			public boolean isKing() {
 				return false;
@@ -118,6 +131,11 @@ public abstract class Piece {
 		},
 		ROOK("R", 500) {
 			@Override
+			public boolean isPawn() {
+				return false;
+			}
+			
+			@Override
 			public boolean isKing() {
 				return false;
 			}
@@ -129,6 +147,11 @@ public abstract class Piece {
 		},
 		QUEEN("Q", 900) {
 			@Override
+			public boolean isPawn() {
+				return false;
+			}
+			
+			@Override
 			public boolean isKing() {
 				return false;
 			}
@@ -139,6 +162,11 @@ public abstract class Piece {
 			}
 		},
 		KING("K", 10000) {
+			@Override
+			public boolean isPawn() {
+				return false;
+			}
+			
 			@Override
 			public boolean isKing() {
 				return true;
@@ -158,18 +186,18 @@ public abstract class Piece {
 			this.pieceValue = pieceValue;
 		}
 		
-		public abstract boolean isKing();
-		
-		public abstract boolean isRook();
+		@Override
+		public String toString() {
+			return this.pieceName;
+		}
 		
 		public int getPieceValue() {
 			return this.pieceValue;
 		}
 		
-		@Override
-		public String toString() {
-			return this.pieceName;
-		}
+		public abstract boolean isKing();
+		public abstract boolean isRook();
+		public abstract boolean isPawn();
 	}
 
 }
