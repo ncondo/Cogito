@@ -21,6 +21,7 @@ import com.chess.engine.pieces.Rook;
 import com.chess.engine.player.BlackPlayer;
 import com.chess.engine.player.Player;
 import com.chess.engine.player.WhitePlayer;
+import com.google.common.collect.Iterables;
 
 
 public class Board {
@@ -70,6 +71,10 @@ public class Board {
 	
 	public Collection<Piece> getWhitePieces() {
 		return this.whitePieces;
+	}
+	
+	public Iterable<Piece> getAllPieces() {
+		return Iterables.unmodifiableIterable(Iterables.concat(this.whitePieces, this.blackPieces));
 	}
 	
 	private Collection<Move> calculateLegalMoves(final Collection<Piece> pieces) {
@@ -123,7 +128,7 @@ public class Board {
 		builder.setPiece(new Knight(1, Color.BLACK));
 		builder.setPiece(new Bishop(2, Color.BLACK));
 		builder.setPiece(new Queen(3, Color.BLACK));
-		builder.setPiece(new King(4, Color.BLACK));
+		builder.setPiece(new King(4, Color.BLACK, true, true));
 		builder.setPiece(new Bishop(5, Color.BLACK));
 		builder.setPiece(new Knight(6, Color.BLACK));
 		builder.setPiece(new Rook(7, Color.BLACK));
@@ -148,7 +153,7 @@ public class Board {
 		builder.setPiece(new Knight(57, Color.WHITE));
 		builder.setPiece(new Bishop(58, Color.WHITE));
 		builder.setPiece(new Queen(59, Color.WHITE));
-		builder.setPiece(new King(60, Color.WHITE));
+		builder.setPiece(new King(60, Color.WHITE, true, true));
 		builder.setPiece(new Bishop(61, Color.WHITE));
 		builder.setPiece(new Knight(62, Color.WHITE));
 		builder.setPiece(new Rook(63, Color.WHITE));
