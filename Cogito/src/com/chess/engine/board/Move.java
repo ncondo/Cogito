@@ -252,6 +252,17 @@ public abstract class Move {
 			return builder.build();
 		}
 		
+		@Override
+		public Board undo() {
+			final BoardBuilder builder = new BoardBuilder();
+			for (final Piece piece : this.board.getAllPieces()) {
+				builder.setPiece(piece);
+			}
+			builder.setEnPassantPawn((Pawn) this.getAttackedPiece());
+			builder.setMoveMaker(this.board.currentPlayer().getColor());
+			return builder.build();
+		}
+		
 	}
 	
 	public static class PawnJump extends Move {
