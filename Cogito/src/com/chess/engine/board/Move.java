@@ -313,7 +313,7 @@ public abstract class Move {
 		@Override
 		public Board execute() {
 			final Board pawnMovedBoard = this.decoratedMove.execute();
-			final Board.BoardBuilder builder = new BoardBuilder();
+			final BoardBuilder builder = new BoardBuilder();
 			for (final Piece piece : pawnMovedBoard.currentPlayer().getActivePieces()) {
 				if (!this.promotedPawn.equals(piece)) {
 					builder.setPiece(piece);
