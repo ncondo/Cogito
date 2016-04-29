@@ -33,7 +33,7 @@ public abstract class Player {
 		this.legalMoves = ImmutableList.copyOf(
 				Iterables.concat(legalMoves, calculateKingCastles(legalMoves, opponentLegalMoves)));
 		this.isInCheck = !Player.calculateAttacksOnTile(
-				this.playerKing.getPiecePosition(), opponentLegalMoves).isEmpty();
+				this.getPlayerKing().getPiecePosition(), opponentLegalMoves).isEmpty();
 	}
 	
 	public King getPlayerKing() {
@@ -74,8 +74,8 @@ public abstract class Player {
 		return this.playerKing.isQueenSideCastleCapable();
 	}
 
-	protected static Collection<Move> calculateAttacksOnTile(int piecePosition,
-			Collection<Move> opponentMoves) {
+	public static Collection<Move> calculateAttacksOnTile(final int piecePosition,
+														  final Collection<Move> opponentMoves) {
 		
 		final List<Move> attackMoves = new ArrayList<>();
 		for (final Move move : opponentMoves) {
@@ -83,7 +83,7 @@ public abstract class Player {
 				attackMoves.add(move);
 			}
 		}
-		return Collections.unmodifiableList(attackMoves);
+		return ImmutableList.copyOf(attackMoves);
 	}
 
 	private King establishKing() {
@@ -115,21 +115,21 @@ public abstract class Player {
 		if (!isMoveLegal(move)) {
 			return new MoveTransition(this.board, move, MoveStatus.ILLEGAL_MOVE);
 		}
-		
 		final Board transitionBoard = move.execute();
-		
 		final Collection<Move> kingAttacks = Player.calculateAttacksOnTile(
 				transitionBoard.currentPlayer().getOpponent().getPlayerKing().getPiecePosition(),
 				transitionBoard.currentPlayer().getLegalMoves());
-		
 		if (!kingAttacks.isEmpty()) {
 			return new MoveTransition(this.board, move, MoveStatus.LEAVES_PLAYER_IN_CHECK);
 		}
-		
 		return new MoveTransition(transitionBoard, move, MoveStatus.DONE);
 	}
 	
-	public String playerInfor() {
+	public MoveTransition unMakeMove(final Move move) {
+		return new MoveTransition(move.undo(), move, MoveStatus.DONE);
+	}
+	
+	public String playerInfo() {
 		return ("Player is: " + this.getColor() + "\nlegal moves =" + getLegalMoves() +
 				"\ninCheck = " + isInCheck() + "\nisInCheckMate = " + isInCheckMate() +
 				"\nisCastled = " + isCastled()) + "\n";

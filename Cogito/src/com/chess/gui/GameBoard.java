@@ -36,6 +36,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.WindowConstants;
+import static javax.swing.JFrame.setDefaultLookAndFeelDecorated;
 
 import com.chess.engine.board.Board;
 import com.chess.engine.board.BoardUtils;
@@ -75,7 +76,7 @@ public final class GameBoard extends Observable {
 		this.gameFrame.setJMenuBar(gameMenuBar);
 		this.gameFrame.setLayout(new BorderLayout());
 		this.chessBoard = Board.createStandardBoard();
-		this.highlightLegalMoves = false;
+		this.highlightLegalMoves = true;
 		this.pieceIconPath = "assets/";
 		this.gameHistoryPanel = new GameHistoryPanel();
 		this.takenPiecesPanel = new TakenPiecesPanel();
@@ -84,11 +85,12 @@ public final class GameBoard extends Observable {
 		this.moveLog = new MoveLog();
 		this.addObserver(new GameAIWatcher());
 		this.gameSetup = new GameSetup(this.gameFrame, true);
+		this.gameSetup.promptUser();
 		this.gameFrame.add(this.takenPiecesPanel, BorderLayout.WEST);
 		this.gameFrame.add(this.boardPanel, BorderLayout.CENTER);
 		this.gameFrame.add(this.gameHistoryPanel, BorderLayout.EAST);
 		this.gameFrame.add(debugPanel, BorderLayout.SOUTH);
-		//setDefaultLookAndFeelDecorated(true);
+		setDefaultLookAndFeelDecorated(true);
 		this.gameFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		this.gameFrame.setSize(OUTER_FRAME_DIMENSION);
 		center(this.gameFrame);
@@ -129,6 +131,10 @@ public final class GameBoard extends Observable {
 	
 	GameSetup getGameSetup() {
 		return this.gameSetup;
+	}
+	
+	boolean getHighlightLegalMoves() {
+		return this.highlightLegalMoves;
 	}
 	
 	private void updateGameBoard(final Board board) {
@@ -346,13 +352,15 @@ public final class GameBoard extends Observable {
 		}
 		
 		private void highlightLegalMoves(final Board board) {
-			for (final Move move : pieceLegalMoves(board)) {
-				if (move.getDestinationCoordinate() == this.tileID) {
-					try {
-						add(new JLabel(new ImageIcon(ImageIO.read(
-								new File("assets/green_highlight.png")))));
-					} catch (Exception e) {
-						e.printStackTrace();
+			if (GameBoard.get().getHighlightLegalMoves()) {
+				for (final Move move : pieceLegalMoves(board)) {
+					if (move.getDestinationCoordinate() == this.tileID) {
+						try {
+							add(new JLabel(new ImageIcon(ImageIO.read(
+									new File("assets/green_highlight.png")))));
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
 					}
 				}
 			}

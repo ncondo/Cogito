@@ -19,8 +19,8 @@ public class StandardBoardEvaluator implements BoardEvaluator {
 	
 	private static int scorePlayer(final Board board, final Player player, final int depth) {
 		return mobility(player) + checkmate(player, depth) + check(player) +
-			   castled(player) + castleCapable(player) + pieceValueAndLocationBonus(player) +
-			   pawnStructure(player);
+			   castled(player) + castleCapable(player) + pieceValueAndLocationBonus(player);
+			   // + pawnStructure(player);
 	}
 	
 	private static int pieceValueAndLocationBonus(final Player player) {

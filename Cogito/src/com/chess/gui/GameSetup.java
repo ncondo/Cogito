@@ -21,6 +21,10 @@ import com.chess.engine.player.Player;
 import com.chess.gui.GameBoard.PlayerType;
 
 public class GameSetup extends JDialog {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private PlayerType whitePlayerType;
 	private PlayerType blackPlayerType;
 	private JSpinner searchDepthSpinner;
@@ -44,7 +48,7 @@ public class GameSetup extends JDialog {
 		final ButtonGroup blackGroup = new ButtonGroup();
 		blackGroup.add(blackHumanButton);
 		blackGroup.add(blackComputerButton);
-		blackHumanButton.setSelected(true);
+		blackComputerButton.setSelected(true);
 		
 		getContentPane().add(myPanel);
 		myPanel.add(new JLabel("White"));
