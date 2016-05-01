@@ -3,9 +3,10 @@
  */
 package com.chess.engine.board;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+
+import com.google.common.collect.ImmutableMap;
 
 
 public final class BoardUtils {
@@ -45,7 +46,6 @@ public final class BoardUtils {
 			row[rowNumber] = true;
 			rowNumber++;
 		} while (rowNumber % NUM_TILES_PER_ROW != 0);
-		
 		return row;
 	}
 
@@ -55,7 +55,6 @@ public final class BoardUtils {
 			column[columnNumber] = true;
 			columnNumber += NUM_TILES_PER_ROW;
 		} while (columnNumber < NUM_TILES);
-		
 		return column;
 	}
 	
@@ -77,7 +76,7 @@ public final class BoardUtils {
 		for (int i = START_TILE_INDEX; i < NUM_TILES; i++) {
 			positionToCoordinate.put(ALGEBRAIC_NOTATION[i], i);
 		}
-		return Collections.unmodifiableMap(positionToCoordinate);
+		return ImmutableMap.copyOf(positionToCoordinate);
 	}
 	
 	public static boolean isValidTileCoordinate(final int coordinate) {

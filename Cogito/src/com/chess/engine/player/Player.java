@@ -91,7 +91,7 @@ public abstract class Player {
 				return (King) piece;
 			}
 		}
-		throw new RuntimeException("Not a valid board!");
+		throw new RuntimeException("Not a valid board! " + this.getColor() + " king could not be est!");
 	}
 	
 	public Collection<Move> getLegalMoves() {
