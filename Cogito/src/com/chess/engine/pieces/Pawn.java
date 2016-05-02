@@ -5,7 +5,6 @@ package com.chess.engine.pieces;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import com.chess.engine.Color;
@@ -17,6 +16,7 @@ import com.chess.engine.board.Move.PawnAttackMove;
 import com.chess.engine.board.Move.PawnEnPassantAttackMove;
 import com.chess.engine.board.Move.PawnMove;
 import com.chess.engine.board.Move.PawnPromotion;
+import com.google.common.collect.ImmutableList;
 
 
 public class Pawn extends Piece {
@@ -77,8 +77,8 @@ public class Pawn extends Piece {
 					legalMoves.add(new PawnMove(board, this, possibleDestination));
 				}
 			} else if (currentOffset == 16 && this.isFirstMove() && 
-					((BoardUtils.SECOND_ROW[this.piecePosition] && this.pieceColor.isWhite()) ||
-					(BoardUtils.SEVENTH_ROW[this.piecePosition] && this.pieceColor.isBlack()))) {
+					((BoardUtils.SECOND_ROW[this.piecePosition] && this.pieceColor.isBlack()) ||
+					(BoardUtils.SEVENTH_ROW[this.piecePosition] && this.pieceColor.isWhite()))) {
 				final int behindPossibleDestination = this.piecePosition + 
 						(this.pieceColor.getDirection() * 8);
 				if (!board.getTile(behindPossibleDestination).isTileOccupied() &&
@@ -145,7 +145,7 @@ public class Pawn extends Piece {
 				}
 			}
 		}
-		return Collections.unmodifiableList(legalMoves);
+		return ImmutableList.copyOf(legalMoves);
 	}
 
 }

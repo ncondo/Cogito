@@ -11,7 +11,6 @@ import com.chess.engine.board.Move;
 
 
 public abstract class Piece {
-	
 	protected final PieceType pieceType;
 	protected final int piecePosition;
 	protected final Color pieceColor;
