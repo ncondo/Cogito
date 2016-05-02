@@ -5,7 +5,6 @@ package com.chess.engine.pieces;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import com.chess.engine.Color;
@@ -15,6 +14,7 @@ import com.chess.engine.board.Move;
 import com.chess.engine.board.Tile;
 import com.chess.engine.board.Move.MajorMove;
 import com.chess.engine.board.Move.MajorAttackMove;
+import com.google.common.collect.ImmutableList;
 
 
 public class King extends Piece {
@@ -24,15 +24,18 @@ public class King extends Piece {
 	private final boolean queenSideCastleCapable;
 
 	public King(final int piecePosition, final Color pieceColor, 
-			final boolean kingSideCastleCapable, final boolean queenSideCastleCapable) {
+				final boolean kingSideCastleCapable,
+				final boolean queenSideCastleCapable) {
 		super(PieceType.KING, piecePosition, pieceColor, true);
 		this.isCastled = false;
 		this.kingSideCastleCapable = kingSideCastleCapable;
 		this.queenSideCastleCapable = queenSideCastleCapable;
 	}
 	
-	public King(final int piecePosition, final Color pieceColor, final boolean isFirstMove,
-			final boolean isCastled, final boolean kingSideCastleCapable, final boolean queenSideCastleCapable) {
+	public King(final int piecePosition, final Color pieceColor,
+				final boolean isFirstMove, final boolean isCastled,
+				final boolean kingSideCastleCapable,
+				final boolean queenSideCastleCapable) {
 		super(PieceType.KING, piecePosition, pieceColor, isFirstMove);
 		this.isCastled = isCastled;
 		this.kingSideCastleCapable = kingSideCastleCapable;
@@ -80,8 +83,8 @@ public class King extends Piece {
 	
 	@Override
 	public King movePiece(Move move) {
-		return new King(move.getDestinationCoordinate(), move.getMovedPiece().getPieceColor(),
-				false, move.isCastlingMove(), false, false);
+		return new King(move.getDestinationCoordinate(), this.pieceColor,
+						false, move.isCastlingMove(), false, false);
 	}
 	
 	@Override
@@ -98,24 +101,19 @@ public class King extends Piece {
 	public Collection<Move> calculateLegalMoves(Board board) {
 		final List<Move> legalMoves = new ArrayList<>();
 		int possibleDestination;
-		
 		for (final int currentOffset : POSSIBLE_MOVE_OFFSETS) {
 			possibleDestination = this.piecePosition + currentOffset;
-			
 			if (isFirstColumnExclusion(this.piecePosition, currentOffset) ||
-					isEighthColumnExclusion(this.piecePosition, currentOffset)) {
+				isEighthColumnExclusion(this.piecePosition, currentOffset)) {
 				continue;
 			}
-			
 			if (BoardUtils.isValidTileCoordinate(possibleDestination)) {
 				final Tile possibleDestinationTile = board.getTile(possibleDestination);
-				
 				if (!possibleDestinationTile.isTileOccupied()) {
 					legalMoves.add(new MajorMove(board, this, possibleDestination));
 				} else {
 					final Piece pieceAtDestination = possibleDestinationTile.getPiece();
 					final Color pieceColor = pieceAtDestination.getPieceColor();
-					
 					if (this.pieceColor != pieceColor) {
 						legalMoves.add(new MajorAttackMove(board, this, possibleDestination,
 								pieceAtDestination));
@@ -123,7 +121,7 @@ public class King extends Piece {
 				}
 			}
 		}
-		return Collections.unmodifiableList(legalMoves);
+		return ImmutableList.copyOf(legalMoves);
 	}
 	
 	private static boolean isFirstColumnExclusion(final int currentPosition, final int candidateOffset) {
