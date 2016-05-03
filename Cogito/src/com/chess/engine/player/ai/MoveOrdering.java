@@ -7,7 +7,7 @@ import java.util.List;
 
 import com.chess.engine.board.Board;
 import com.chess.engine.board.Move;
-import com.chess.engine.player.MoveTransition;
+import com.chess.engine.board.MoveTransition;
 import com.google.common.collect.ImmutableList;
 import com.google.common.primitives.Ints;
 

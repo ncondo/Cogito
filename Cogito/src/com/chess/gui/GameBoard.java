@@ -36,14 +36,15 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 import javax.swing.WindowConstants;
+
 import static javax.swing.JFrame.setDefaultLookAndFeelDecorated;
 
 import com.chess.engine.board.Board;
 import com.chess.engine.board.BoardUtils;
 import com.chess.engine.board.Move;
+import com.chess.engine.board.MoveTransition;
 import com.chess.engine.board.Tile;
 import com.chess.engine.pieces.Piece;
-import com.chess.engine.player.MoveTransition;
 import com.chess.engine.player.ai.AlphaBetaWithMoveOrdering;
 
 
