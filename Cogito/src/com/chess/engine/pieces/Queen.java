@@ -5,7 +5,6 @@ package com.chess.engine.pieces;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import com.chess.engine.Color;
@@ -15,6 +14,7 @@ import com.chess.engine.board.Move;
 import com.chess.engine.board.Move.MajorMove;
 import com.chess.engine.board.Move.MajorAttackMove;
 import com.chess.engine.board.Tile;
+import com.google.common.collect.ImmutableList;
 
 
 public class Queen extends Piece {
@@ -57,7 +57,6 @@ public class Queen extends Piece {
 	public Collection<Move> calculateLegalMoves(final Board board) {
 		final List<Move> legalMoves = new ArrayList<>();
 		int possibleDestination;
-		
 		for (final int currentOffset : POSSIBLE_MOVE_OFFSETS) {
 			possibleDestination = this.piecePosition;
 			while (BoardUtils.isValidTileCoordinate(possibleDestination)) {
@@ -84,7 +83,7 @@ public class Queen extends Piece {
 				}
 			}
 		}
-		return Collections.unmodifiableList(legalMoves);
+		return ImmutableList.copyOf(legalMoves);
 	}
 	
 	private static boolean isFirstColumnExclusion(final int currentPosition, final int candidateOffset) {

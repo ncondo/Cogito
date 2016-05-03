@@ -5,7 +5,6 @@ package com.chess.engine.pieces;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import com.chess.engine.Color;
@@ -15,6 +14,7 @@ import com.chess.engine.board.Move;
 import com.chess.engine.board.Move.MajorMove;
 import com.chess.engine.board.Move.MajorAttackMove;
 import com.chess.engine.board.Tile;
+import com.google.common.collect.ImmutableList;
 
 
 public class Bishop extends Piece {
@@ -57,10 +57,8 @@ public class Bishop extends Piece {
 	public Collection<Move> calculateLegalMoves(final Board board) {
 		final List<Move> legalMoves = new ArrayList<>();
 		int possibleDestination;
-		
 		for (final int currentOffset : POSSIBLE_MOVE_OFFSETS) {
 			possibleDestination = this.piecePosition;
-			
 			while (BoardUtils.isValidTileCoordinate(possibleDestination)) {
 				if (isFirstColumnExclusion(possibleDestination, currentOffset) ||
 						isEighthColumnExclusion(possibleDestination, currentOffset)) {
@@ -69,13 +67,11 @@ public class Bishop extends Piece {
 				possibleDestination += currentOffset;
 				if (BoardUtils.isValidTileCoordinate(possibleDestination)) {
 					final Tile possibleDestinationTile = board.getTile(possibleDestination);
-					
 					if (!possibleDestinationTile.isTileOccupied()) {
 						legalMoves.add(new MajorMove(board, this, possibleDestination));
 					} else {
 						final Piece pieceAtDestination = possibleDestinationTile.getPiece();
 						final Color pieceColor = pieceAtDestination.getPieceColor();
-						
 						if (this.pieceColor != pieceColor) {
 							legalMoves.add(new MajorAttackMove(board, this, possibleDestination, 
 									pieceAtDestination));
@@ -85,7 +81,7 @@ public class Bishop extends Piece {
 				}
 			}
 		}
-		return Collections.unmodifiableList(legalMoves);
+		return ImmutableList.copyOf(legalMoves);
 	}
 	
 	private static boolean isFirstColumnExclusion(final int currentPosition, final int candidateOffset) {

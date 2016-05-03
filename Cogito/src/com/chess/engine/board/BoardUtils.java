@@ -10,7 +10,6 @@ import com.google.common.collect.ImmutableMap;
 
 
 public final class BoardUtils {
-	
 	public static final boolean[] FIRST_COLUMN = initColumn(0);
 	public static final boolean[] SECOND_COLUMN = initColumn(1);
 	public static final boolean[] THIRD_COLUMN = initColumn(2);
