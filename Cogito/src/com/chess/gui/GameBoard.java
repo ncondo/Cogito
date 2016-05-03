@@ -150,13 +150,29 @@ public final class GameBoard extends Observable {
 		setChanged();
 		notifyObservers(playerType);
 	}
-	// TODO
+	
 	private void undoLastMove() {
-		
+		final Move lastMove = GameBoard.get().getMoveLog().removeMove(GameBoard.get().getMoveLog().size()-1);
+		this.chessBoard = this.chessBoard.currentPlayer().unMakeMove(lastMove).getTransitionBoard();
+		this.computerMove = null;
+		GameBoard.get().getMoveLog().removeMove(lastMove);
+		GameBoard.get().getGameHistoryPanel().redo(chessBoard, GameBoard.get().getMoveLog());
+		GameBoard.get().getTakenPiecesPanel().redo(GameBoard.get().getMoveLog());
+		GameBoard.get().getBoardPanel().drawBoard(chessBoard);
+		GameBoard.get().getDebugPanel().redo();
 	}
-	// TODO
+	
 	private void undoAllMoves() {
-		
+		for (int i = GameBoard.get().getMoveLog().size()-1; i >= 0; i--) {
+			final Move lastMove = GameBoard.get().getMoveLog().removeMove(GameBoard.get().getMoveLog().size()-1);
+			this.chessBoard = this.chessBoard.currentPlayer().unMakeMove(lastMove).getTransitionBoard();
+		}
+		this.computerMove = null;
+		GameBoard.get().getMoveLog().clear();
+		GameBoard.get().getGameHistoryPanel().redo(chessBoard, GameBoard.get().getMoveLog());
+		GameBoard.get().getTakenPiecesPanel().redo(GameBoard.get().getMoveLog());
+		GameBoard.get().getBoardPanel().drawBoard(chessBoard);
+		GameBoard.get().getDebugPanel().redo();
 	}
 	
 	public void show() {
@@ -184,6 +200,7 @@ public final class GameBoard extends Observable {
 	
 	private JMenu createFileMenu() {
 		final JMenu fileMenu = new JMenu("File");
+		
 		final JMenuItem exitMenuItem = new JMenuItem("Exit");
 		exitMenuItem.addActionListener(new ActionListener() {
 			@Override
@@ -192,25 +209,39 @@ public final class GameBoard extends Observable {
 			}
 		});
 		fileMenu.add(exitMenuItem);
+		
 		return fileMenu;
 	}
 	
 	private JMenu createOptionsMenu() {
 		final JMenu optionsMenu = new JMenu("Options");
-		final JMenuItem resetMenuItem = new JMenuItem("New Game");
-		resetMenuItem.addActionListener(new ActionListener() {
+		
+		final JMenuItem undoMoveMenuItem = new JMenuItem("Undo move");
+		undoMoveMenuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO
-				//undoAllMoves();
+				if (GameBoard.get().getMoveLog().size() > 0) {
+					undoLastMove();
+				}
 			}
 		});
-		optionsMenu.add(resetMenuItem);
+		optionsMenu.add(undoMoveMenuItem);
+		
+		final JMenuItem newGameMenuItem = new JMenuItem("New Game");
+		newGameMenuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				undoAllMoves();
+			}
+		});
+		optionsMenu.add(newGameMenuItem);
+		
 		return optionsMenu;
 	}
 	
 	private JMenu createPreferencesMenu() {
 		final JMenu preferencesMenu = new JMenu("Preferences");
+		
 		final JCheckBoxMenuItem cbLegalMoveHighlighter = new JCheckBoxMenuItem(
 				"Highlight Legal Moves", false);
 		cbLegalMoveHighlighter.addActionListener(new ActionListener() {
@@ -220,6 +251,7 @@ public final class GameBoard extends Observable {
 			}
 		});
 		preferencesMenu.add(cbLegalMoveHighlighter);
+		
 		return preferencesMenu;
 	}
 	
