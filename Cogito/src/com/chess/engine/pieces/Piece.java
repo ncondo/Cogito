@@ -5,7 +5,6 @@ package com.chess.engine.pieces;
 
 import java.util.Collection;
 
-import com.chess.engine.Color;
 import com.chess.engine.board.Board;
 import com.chess.engine.board.Move;
 

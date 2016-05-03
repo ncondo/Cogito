@@ -16,7 +16,7 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 
-import com.chess.engine.Color;
+import com.chess.engine.pieces.Color;
 import com.chess.engine.player.Player;
 import com.chess.gui.GameBoard.PlayerType;
 

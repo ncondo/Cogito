@@ -10,8 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.chess.engine.Color;
 import com.chess.engine.pieces.Bishop;
+import com.chess.engine.pieces.Color;
 import com.chess.engine.pieces.King;
 import com.chess.engine.pieces.Knight;
 import com.chess.engine.pieces.Pawn;

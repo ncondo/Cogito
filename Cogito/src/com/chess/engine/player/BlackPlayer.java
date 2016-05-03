@@ -8,12 +8,12 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import com.chess.engine.Color;
 import com.chess.engine.board.Board;
 import com.chess.engine.board.Move;
 import com.chess.engine.board.Move.KingSideCastleMove;
 import com.chess.engine.board.Move.QueenSideCastleMove;
 import com.chess.engine.board.Tile;
+import com.chess.engine.pieces.Color;
 import com.chess.engine.pieces.Piece;
 import com.chess.engine.pieces.Rook;
 
