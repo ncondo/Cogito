@@ -3,7 +3,6 @@
  */
 package com.chess.engine.board;
 
-import com.chess.engine.player.MoveStatus;
 
 
 public class MoveTransition {

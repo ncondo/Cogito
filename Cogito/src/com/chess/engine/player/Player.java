@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.chess.engine.board.Board;
 import com.chess.engine.board.Move;
+import com.chess.engine.board.MoveStatus;
 import com.chess.engine.board.MoveTransition;
 import com.chess.engine.pieces.Color;
 import com.chess.engine.pieces.King;
