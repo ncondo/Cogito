@@ -64,7 +64,7 @@ public class AlphaBetaWithMoveOrdering extends Observable implements MoveStrateg
 	public long getNumBoardsEvaluated() {
 		return this.boardsEvaluated;
 	}
-	
+
 	@Override
 	public Move execute(final Board board, final int depth) {
 		final long startTime = System.currentTimeMillis();

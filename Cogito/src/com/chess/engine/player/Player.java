@@ -20,19 +20,19 @@ import com.google.common.collect.Iterables;
 
 
 public abstract class Player {
-	
 	protected final Board board;
 	protected final King playerKing;
 	protected final Collection<Move> legalMoves;
 	private final boolean isInCheck;
 	private MoveStrategy strategy;
 	
-	Player(final Board board, final Collection<Move> legalMoves,
-			final Collection<Move> opponentLegalMoves) {
+	Player(final Board board, final Collection<Move> playerLegalMoves,
+		   final Collection<Move> opponentLegalMoves) {
 		this.board = board;
 		this.playerKing = establishKing();
 		this.legalMoves = ImmutableList.copyOf(
-				Iterables.concat(legalMoves, calculateKingCastles(legalMoves, opponentLegalMoves)));
+				Iterables.concat(playerLegalMoves,
+				calculateKingCastles(playerLegalMoves, opponentLegalMoves)));
 		this.isInCheck = !Player.calculateAttacksOnTile(
 				this.getPlayerKing().getPiecePosition(), opponentLegalMoves).isEmpty();
 	}
@@ -53,8 +53,8 @@ public abstract class Player {
 		return !this.isInCheck && !hasEscapeMoves();
 	}
 	
-	private boolean hasEscapeMoves() {
-		for (final Move move : this.legalMoves) {
+	protected boolean hasEscapeMoves() {
+		for (final Move move : getLegalMoves()) {
 			final MoveTransition transition = makeMove(move);
 			if (transition.getMoveStatus().isDone()) {
 				return true;
@@ -77,7 +77,6 @@ public abstract class Player {
 
 	public static Collection<Move> calculateAttacksOnTile(final int piecePosition,
 														  final Collection<Move> opponentMoves) {
-		
 		final List<Move> attackMoves = new ArrayList<>();
 		for (final Move move : opponentMoves) {
 			if (piecePosition == move.getDestinationCoordinate()) {

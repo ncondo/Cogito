@@ -21,10 +21,7 @@ import com.chess.engine.player.Player;
 import com.chess.gui.GameBoard.PlayerType;
 
 public class GameSetup extends JDialog {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1125352371167303641L;
 	private PlayerType whitePlayerType;
 	private PlayerType blackPlayerType;
 	private JSpinner searchDepthSpinner;
@@ -86,6 +83,7 @@ public class GameSetup extends JDialog {
 		setLocationRelativeTo(frame);
 		pack();
 		setVisible(false);
+		
 	}
 	
 	void promptUser() {

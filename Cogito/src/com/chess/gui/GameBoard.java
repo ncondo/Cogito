@@ -70,7 +70,7 @@ public final class GameBoard extends Observable {
 	private final Color darkTileColor = Color.decode("#593E1A");
 	private static final GameBoard INSTANCE = new GameBoard();
 	
-	public GameBoard() {
+	private GameBoard() {
 		this.gameFrame = new JFrame("Cogito");
 		final JMenuBar gameMenuBar = new JMenuBar();
 		populateMenuBar(gameMenuBar);
@@ -149,6 +149,11 @@ public final class GameBoard extends Observable {
 	public void moveMadeUpdate(final PlayerType playerType) {
 		setChanged();
 		notifyObservers(playerType);
+	}
+	
+	public void setupUpdate(final GameSetup gameSetup) {
+		setChanged();
+		notifyObservers(gameSetup);
 	}
 	
 	private void undoLastMove() {
@@ -256,7 +261,7 @@ public final class GameBoard extends Observable {
 	}
 	
 	private class BoardPanel extends JPanel {
-		private static final long serialVersionUID = 1L;
+		private static final long serialVersionUID = -1673969903945091454L;
 		final List<TilePanel> boardTiles;
 		
 		BoardPanel() {
@@ -283,7 +288,7 @@ public final class GameBoard extends Observable {
 	}
 	
 	private class TilePanel extends JPanel {
-		private static final long serialVersionUID = 1L;
+		private static final long serialVersionUID = 7811721146041749213L;
 		private final int tileID;
 		
 		TilePanel(final BoardPanel boardPanel, final int tileID) {
@@ -322,7 +327,6 @@ public final class GameBoard extends Observable {
 						humanMovedPiece = null;
 					}
 					SwingUtilities.invokeLater(new Runnable() {
-						@Override
 						public void run() {
 							gameHistoryPanel.redo(chessBoard, moveLog);
 							takenPiecesPanel.redo(moveLog);
@@ -401,7 +405,7 @@ public final class GameBoard extends Observable {
 		
 		private Collection<Move> pieceLegalMoves(final Board board) {
 			if (humanMovedPiece != null && 
-					humanMovedPiece.getPieceColor() == board.currentPlayer().getColor()) {
+				humanMovedPiece.getPieceColor() == board.currentPlayer().getColor()) {
 				return humanMovedPiece.calculateLegalMoves(board);
 			}
 			return Collections.emptyList();
@@ -449,22 +453,25 @@ public final class GameBoard extends Observable {
 		
 		@Override
 		public void update(final Observable o, final Object arg) {
-			if (GameBoard.get().getGameSetup().isAIPlayer(GameBoard.get().getGameBoard().currentPlayer()) &&
-					!GameBoard.get().getGameBoard().currentPlayer().isInCheckMate() &&
-					!GameBoard.get().getGameBoard().currentPlayer().isInStaleMate()) {
+			if (GameBoard.get().getGameSetup().isAIPlayer(
+				GameBoard.get().getGameBoard().currentPlayer()) &&
+				!GameBoard.get().getGameBoard().currentPlayer().isInCheckMate() &&
+				!GameBoard.get().getGameBoard().currentPlayer().isInStaleMate()) {
 				System.out.println(GameBoard.get().getGameBoard().currentPlayer() +
 						" is set to AI, thinking...");
 				final AIThinkTank thinkTank = new AIThinkTank();
 				thinkTank.execute();
 			}
 			
-			if (GameBoard.get().getGameBoard().currentPlayer().isInCheckMate()) {
+			if (GameBoard.get().getGameBoard().currentPlayer().isInCheckMate() ||
+				GameBoard.get().getGameBoard().currentPlayer().isInStaleMate()) {
 				JOptionPane.showMessageDialog(GameBoard.get().getBoardPanel(),
 						"Game Over: Player " + GameBoard.get().getGameBoard().currentPlayer() +
 						" is in checkmate!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
 			}
 			
-			if (GameBoard.get().getGameBoard().currentPlayer().isInStaleMate()) {
+			if (GameBoard.get().getGameBoard().currentPlayer().isInStaleMate() ||
+				GameBoard.get().getGameBoard().currentPlayer().isInStaleMate()) {
 				JOptionPane.showMessageDialog(GameBoard.get().getBoardPanel(),
 						"Game Over: Player " + GameBoard.get().getGameBoard().currentPlayer() +
 						" is in stalemate!", "Game Over", JOptionPane.INFORMATION_MESSAGE);

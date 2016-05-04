@@ -18,10 +18,10 @@ import com.chess.engine.pieces.Rook;
 import com.google.common.collect.ImmutableList;
 
 
-public class WhitePlayer extends Player {
+public final class WhitePlayer extends Player {
 
 	public WhitePlayer(final Board board, final Collection<Move> whiteStandardLegalMoves,
-			final Collection<Move> blackStandardLegalMoves) {
+					   final Collection<Move> blackStandardLegalMoves) {
 		super(board, whiteStandardLegalMoves, blackStandardLegalMoves);
 	}
 
@@ -39,10 +39,15 @@ public class WhitePlayer extends Player {
 	public Player getOpponent() {
 		return this.board.blackPlayer();
 	}
+	
+	@Override
+	public String toString() {
+		return Color.WHITE.toString();
+	}
 
 	@Override
 	protected Collection<Move> calculateKingCastles(final Collection<Move> playerLegals,
-			final Collection<Move> opponentLegals) {
+													final Collection<Move> opponentLegals) {
 		final List<Move> kingCastles = new ArrayList<>();
 		if (this.playerKing.isFirstMove() && !this.isInCheck()) {
 			// white's king side castle

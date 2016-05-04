@@ -5,7 +5,7 @@ import com.chess.engine.pieces.Piece;
 import com.chess.engine.player.Player;
 import com.chess.engine.player.ai.KingSafetyAnalyzer.KingDistance;
 
-public class StandardBoardEvaluator implements BoardEvaluator {
+public final class StandardBoardEvaluator implements BoardEvaluator {
 	private final static int CHECK_MATE_BONUS = 10000;
 	private final static int CHECK_BONUS = 20;
 	private final static int CASTLED_BONUS = 60;

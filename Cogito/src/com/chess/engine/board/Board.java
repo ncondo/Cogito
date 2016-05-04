@@ -5,7 +5,6 @@ package com.chess.engine.board;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +20,7 @@ import com.chess.engine.pieces.Rook;
 import com.chess.engine.player.BlackPlayer;
 import com.chess.engine.player.Player;
 import com.chess.engine.player.WhitePlayer;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 
 
@@ -35,8 +35,8 @@ public class Board {
 	
 	private Board(final BoardBuilder builder) {
 		this.gameBoard = createGameBoard(builder);
-		this.whitePieces = calculateActivePieces(this.gameBoard, Color.WHITE);
-		this.blackPieces = calculateActivePieces(this.gameBoard, Color.BLACK);
+		this.whitePieces = calculateActivePieces(builder, Color.WHITE);
+		this.blackPieces = calculateActivePieces(builder, Color.BLACK);
 		this.enPassantPawn = builder.enPassantPawn;
 		final Collection<Move> whiteStandardLegalMoves = calculateLegalMoves(this.whitePieces);
 		final Collection<Move> blackStandardLegalMoves = calculateLegalMoves(this.blackPieces);
@@ -62,7 +62,11 @@ public class Board {
 	}
 	
 	public Tile getTile(final int tileCoordinate) {
-		return gameBoard.get(tileCoordinate);
+		return this.gameBoard.get(tileCoordinate);
+	}
+	
+	public List<Tile> getGameBoard() {
+		return this.gameBoard;
 	}
 	
 	public Collection<Piece> getBlackPieces() {
@@ -77,14 +81,30 @@ public class Board {
 		return Iterables.unmodifiableIterable(Iterables.concat(this.whitePieces, this.blackPieces));
 	}
 	
+	public Iterable<Move> getAllLegalMoves() {
+		return Iterables.unmodifiableIterable(Iterables.concat(this.whitePlayer.getLegalMoves(),
+															   this.blackPlayer.getLegalMoves()));
+	}
+	
 	private Collection<Move> calculateLegalMoves(final Collection<Piece> pieces) {
 		final List<Move> legalMoves = new ArrayList<>();
 		for (final Piece piece : pieces) {
 			legalMoves.addAll(piece.calculateLegalMoves(this));
 		}
-		return Collections.unmodifiableList(legalMoves);
+		return ImmutableList.copyOf(legalMoves);
 	}
-
+	
+	private static Collection<Piece> calculateActivePieces(final BoardBuilder builder,
+														   final Color color) {
+		final List<Piece> activePieces = new ArrayList<>();
+		for (final Piece piece : builder.boardConfig.values()) {
+			if (piece.getPieceColor() == color) {
+				activePieces.add(piece);
+			}
+		}
+		return ImmutableList.copyOf(activePieces);
+	}
+	/*
 	private static Collection<Piece> calculateActivePieces(final List<Tile> gameBoard,
 														   final Color color) {
 		final List<Piece> activePieces = new ArrayList<>();
@@ -96,8 +116,8 @@ public class Board {
 				}
 			}
 		}
-		return Collections.unmodifiableList(activePieces);
-	}
+		return ImmutableList.copyOf(activePieces);
+	} */
 	
 	@Override
 	public String toString() {
@@ -114,11 +134,11 @@ public class Board {
 	}
 	
 	private static List<Tile> createGameBoard(final BoardBuilder builder) {
-		final List<Tile> tiles = new ArrayList<Tile>(BoardUtils.NUM_TILES);
+		final Tile[] tiles = new Tile[BoardUtils.NUM_TILES];
 		for (int i = 0; i < BoardUtils.NUM_TILES; i++) {
-			tiles.add(i, Tile.createTile(i, builder.boardConfig.get(i)));
+			tiles[i] = Tile.createTile(i, builder.boardConfig.get(i));
 		}
-		return Collections.unmodifiableList(tiles);
+		return ImmutableList.copyOf(tiles);
 	}
 	
 	public static Board createStandardBoard() {
@@ -182,13 +202,13 @@ public class Board {
 			return this;
 		}
 		
+		public BoardBuilder setEnPassantPawn(final Pawn enPassantPawn) {
+			this.enPassantPawn = enPassantPawn;
+			return this;
+		}
+		
 		public Board build() {
 			return new Board(this);
-		}
-
-		public void setEnPassantPawn(Pawn enPassantPawn) {
-			this.enPassantPawn = enPassantPawn;
-			
 		}
 	}
 
