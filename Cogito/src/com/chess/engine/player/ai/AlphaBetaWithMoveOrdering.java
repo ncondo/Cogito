@@ -23,6 +23,8 @@ public class AlphaBetaWithMoveOrdering extends Observable implements MoveStrateg
 	private int quiescenceCount;
 	private int cutOffsProduced;
 	
+	
+	
 	private enum MoveSorter {
 		
 		SORT {
