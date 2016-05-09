@@ -23,8 +23,6 @@ public class AlphaBetaWithMoveOrdering extends Observable implements MoveStrateg
 	private int quiescenceCount;
 	private int cutOffsProduced;
 	
-	
-	
 	private enum MoveSorter {
 		
 		SORT {
@@ -88,8 +86,8 @@ public class AlphaBetaWithMoveOrdering extends Observable implements MoveStrateg
 			if (moveTransition.getMoveStatus().isDone()) {
 				final long candidateMoveStartTime = System.nanoTime();
 				currentValue = color.isWhite() ?
-					min(moveTransition.getTransitionBoard(), depth-1, highestSeenValue, lowestSeenValue) :
-					max(moveTransition.getTransitionBoard(), depth-1, highestSeenValue, lowestSeenValue);
+					min(moveTransition.getTransitionBoard(), currentPlayer, Move.NULL_MOVE, highestSeenValue, lowestSeenValue, depth-1) :
+					max(moveTransition.getTransitionBoard(), currentPlayer, Move.NULL_MOVE, highestSeenValue, lowestSeenValue, depth-1);
 				if (color.isWhite() && currentValue > highestSeenValue) {
 					highestSeenValue = currentValue;
 					bestMove = move;
@@ -120,53 +118,74 @@ public class AlphaBetaWithMoveOrdering extends Observable implements MoveStrateg
 		return bestMove;
 	}
 	
-	public int max(final Board board, final int depth, final int highest, final int lowest) {
-		if (depth == 0 || BoardUtils.isEndGame(board)) {
-			this.boardsEvaluated++;
-			return this.evaluator.evaluate(board, depth);
-		}
-		int currentHighest = highest;
-		for (final Move move : this.moveSorter.sort((board.currentPlayer().getLegalMoves()))) {
-			final MoveTransition moveTransition = board.currentPlayer().makeMove(move);
-			if (moveTransition.getMoveStatus().isDone()) {
-				currentHighest = Math.max(currentHighest, min(moveTransition.getTransitionBoard(),
-						calculateQuiescenceDepth(board, move, depth), currentHighest, lowest));
-				if (lowest <= currentHighest) {
-					this.cutOffsProduced++;
-					break;
+	public int max(final Board board, final Player moveMakingPlayer, final Move priorMove, 
+				   final int highest, final int lowest, final int depth) {
+		if (depth == 0) {
+			final boolean isEndGame = BoardUtils.isEndGame(board);
+			final boolean searchEndsOnEvenPlies = searchEndedOnEvenPlies(board, moveMakingPlayer);
+			if ((searchEndsOnEvenPlies && !priorMove.isAttack()) || isEndGame) {
+				this.boardsEvaluated++;
+				return this.evaluator.evaluate(board, depth);
+			} else {
+				if (!searchEndsOnEvenPlies || this.quiescenceCount < 1000) {
+					this.quiescenceCount++;
+					return min(board, moveMakingPlayer, priorMove, highest, lowest, 1);
+				}
+				this.boardsEvaluated++;
+				return this.evaluator.evaluate(board, depth);
+			}
+		} else {
+			int currentHighest = highest;
+			for (final Move move : this.moveSorter.sort((board.currentPlayer().getLegalMoves()))) {
+				final MoveTransition moveTransition = board.currentPlayer().makeMove(move);
+				if (moveTransition.getMoveStatus().isDone()) {
+					currentHighest = Math.max(currentHighest, min(moveTransition.getTransitionBoard(),
+							moveMakingPlayer, move, currentHighest, lowest, depth-1));
+					if (lowest <= currentHighest) {
+						this.cutOffsProduced++;
+						break;
+					}
 				}
 			}
+			return currentHighest;
 		}
-		return currentHighest;
 	}
 	
-	public int min(final Board board, final int depth, final int highest, final int lowest) {
-		if (depth == 0 || BoardUtils.isEndGame(board)) {
-			this.boardsEvaluated++;
-			return this.evaluator.evaluate(board, depth);
-		}
-		int currentLowest = lowest;
-		for (final Move move : this.moveSorter.sort((board.currentPlayer().getLegalMoves()))) {
-			final MoveTransition moveTransition = board.currentPlayer().makeMove(move);
-			if (moveTransition.getMoveStatus().isDone()) {
-				currentLowest = Math.min(currentLowest, max(moveTransition.getTransitionBoard(),
-						calculateQuiescenceDepth(board, move, depth), highest, currentLowest));
-				if (currentLowest <= highest) {
-					this.cutOffsProduced++;
-					break;
+	public int min(final Board board, final Player moveMakingPlayer, final Move priorMove, 
+				   final int highest, final int lowest, final int depth) {
+		if (depth == 0) {
+			final boolean isEndGame = BoardUtils.isEndGame(board);
+			final boolean searchEndsOnEvenPlies = searchEndedOnEvenPlies(board, moveMakingPlayer);
+			if ((searchEndsOnEvenPlies && !priorMove.isAttack()) || isEndGame) {
+				this.boardsEvaluated++;
+				return this.evaluator.evaluate(board, depth);
+			} else {
+				if (!searchEndsOnEvenPlies || this.quiescenceCount < 1000) {
+					this.quiescenceCount++;
+					return max(board, moveMakingPlayer, priorMove, highest, lowest, 1);
+				}
+				this.boardsEvaluated++;
+				return this.evaluator.evaluate(board, depth);
+			}
+		} else {
+			int currentLowest = lowest;
+			for (final Move move : this.moveSorter.sort((board.currentPlayer().getLegalMoves()))) {
+				final MoveTransition moveTransition = board.currentPlayer().makeMove(move);
+				if (moveTransition.getMoveStatus().isDone()) {
+					currentLowest = Math.min(currentLowest, max(moveTransition.getTransitionBoard(),
+							moveMakingPlayer, priorMove, highest, currentLowest, depth-1));
+					if (currentLowest <= highest) {
+						this.cutOffsProduced++;
+						break;
+					}
 				}
 			}
+			return currentLowest;
 		}
-		return currentLowest;
 	}
 	
-	private int calculateQuiescenceDepth(final Board board, final Move move, final int depth) {
-		if ((depth == 1 && (this.quiescenceCount < this.quiescenceFactor)) &&
-				(move.isAttack() || BoardUtils.isThreatenedBoard(board))) {
-			this.quiescenceCount++;
-			return 2;
-		}
-		return depth - 1;
+	private static boolean searchEndedOnEvenPlies(Board board, Player moveMakingPlayer) {
+		return moveMakingPlayer.getColor() != board.currentPlayer().getColor();
 	}
 	
 	private static String calculateTimeTaken(final long start, final long end) {
