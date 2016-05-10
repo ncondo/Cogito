@@ -60,9 +60,9 @@ public class Knight extends Piece {
 			possibleDestination = this.piecePosition + currentOffset;
 			if (BoardUtils.isValidTileCoordinate(possibleDestination)) {
 				if (isFirstColumnExclusion(this.piecePosition, currentOffset) ||
-						isSecondColumnExclusion(this.piecePosition, currentOffset) ||
-						isSeventhColumnExclusion(this.piecePosition, currentOffset) ||
-						isEighthColumnExclusion(this.piecePosition, currentOffset)) {
+					isSecondColumnExclusion(this.piecePosition, currentOffset) ||
+					isSeventhColumnExclusion(this.piecePosition, currentOffset) ||
+					isEighthColumnExclusion(this.piecePosition, currentOffset)) {
 					continue;
 				}
 				final Tile possibleDestinationTile = board.getTile(possibleDestination);
@@ -71,7 +71,6 @@ public class Knight extends Piece {
 				} else {
 					final Piece pieceAtDestination = possibleDestinationTile.getPiece();
 					final Color pieceColor = pieceAtDestination.getPieceColor();
-					
 					if (this.pieceColor != pieceColor) {
 						legalMoves.add(new MajorAttackMove(board, this, possibleDestination,
 								pieceAtDestination));
