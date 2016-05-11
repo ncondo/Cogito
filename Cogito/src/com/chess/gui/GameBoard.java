@@ -364,9 +364,9 @@ public final class GameBoard extends Observable {
 			if (board.getTile(this.tileID).isTileOccupied()) {
 				try {
 					// Example: white bishop == "WB.gif"
-					final BufferedImage image = ImageIO.read(new File(pieceIconPath +
-						board.getTile(this.tileID).getPiece().getPieceColor().toString().substring(0, 1) +
-						"" + board.getTile(this.tileID).getPiece().toString() + ".gif"));
+					final BufferedImage image = ImageIO.read(new File(pieceIconPath + board.getTile(
+							this.tileID).getPiece().getPieceColor().toString().substring(0, 1) +
+							"" + board.getTile(this.tileID).getPiece().toString() + ".gif"));
 					add(new JLabel(new ImageIcon(image)));
 				} catch (IOException e) {
 					e.printStackTrace();
