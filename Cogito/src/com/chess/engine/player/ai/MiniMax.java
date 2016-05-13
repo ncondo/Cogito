@@ -33,7 +33,7 @@ public final class MiniMax extends Observable implements MoveStrategy {
 	@Override
 	public Move execute(Board board, int depth) {
 		final long startTime = System.currentTimeMillis();
-		Move bestMove = null;
+		Move bestMove = Move.NULL_MOVE;
 		int highestSeenValue = Integer.MIN_VALUE;
 		int lowestSeenValue = Integer.MAX_VALUE;
 		int currentValue;
@@ -135,8 +135,8 @@ public final class MiniMax extends Observable implements MoveStrategy {
 	}
 
 	private static boolean isEndGameScenario(final Board board) {
-		return board.currentPlayer().isInCheckMate()
-				|| board.currentPlayer().isInStaleMate();
+		return board.currentPlayer().isInCheckMate() ||
+			   board.currentPlayer().isInStaleMate();
 	}
 	
 	private static class FreqTableRow {
