@@ -46,6 +46,7 @@ import com.chess.engine.board.MoveTransition;
 import com.chess.engine.board.Tile;
 import com.chess.engine.pieces.Piece;
 import com.chess.engine.player.ai.AlphaBetaWithMoveOrdering;
+import com.chess.engine.player.ai.MiniMax;
 
 
 public final class GameBoard extends Observable {
@@ -489,8 +490,9 @@ public final class GameBoard extends Observable {
 			final Move bestMove;
 			
 			final int moveNumber = GameBoard.get().getMoveLog().size();
-			final int quiescenceFactor = 2000 + (100 * moveNumber);
-			final AlphaBetaWithMoveOrdering strategy = new AlphaBetaWithMoveOrdering(0/*quiescenceFactor*/);
+			//final int quiescenceFactor = 2000 + (100 * moveNumber);
+			//final AlphaBetaWithMoveOrdering strategy = new AlphaBetaWithMoveOrdering(0);
+			final MiniMax strategy = new MiniMax();
 			strategy.addObserver(GameBoard.get().getDebugPanel());
 			GameBoard.get().getGameBoard().currentPlayer().setMoveStrategy(strategy);
 			bestMove = GameBoard.get().getGameBoard().currentPlayer().getMoveStrategy().execute(
